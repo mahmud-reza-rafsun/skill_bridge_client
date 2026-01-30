@@ -35,8 +35,8 @@ const LogoIcon = () => (
 export const Navbar = ({
   menu = [
     { title: "Home", url: "/" },
+    { title: "Mentor", url: "/mentor" },
     { title: "Dashboard", url: "/dashboard" },
-    { title: "Blog", url: "/blog" },
   ],
   auth = {
     login: { title: "Login", url: "/login" },

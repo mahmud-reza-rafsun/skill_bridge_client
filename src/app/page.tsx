@@ -1,5 +1,6 @@
 import Courses from "@/components/section/Courses/Courses";
 import { HeroSection } from "@/components/section/HeroSectoon/HeroSectoon";
+import OutTutor from "@/components/section/OurTutor/OurTutor";
 
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
     <main>
       <HeroSection />
       <Courses />
+      <OutTutor />
     </main>
   );
 }
