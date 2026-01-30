@@ -40,14 +40,14 @@ export const HeroSection = () => {
 
                     {/* Actions - Matching Navbar Style */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Button asChild size="lg" className="h-12 px-8 rounded-full text-sm font-bold bg-orange-500 text-white hover:bg-orange-600 shadow-lg shadow-orange-500/20 border-none transition-all hover:scale-105 active:scale-95 group">
+                        <Button asChild size="lg" className="h-10 px-4 rounded-full text-sm font-bold bg-orange-500 text-white hover:bg-orange-600 shadow-lg shadow-orange-500/20 border-none transition-all hover:scale-105 active:scale-95 group">
                             <Link href="/register" className="flex items-center gap-2">
                                 Start Learning
                                 <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
 
-                        <Button asChild size="lg" variant="ghost" className="h-12 px-8 rounded-full text-sm font-semibold hover:bg-orange-500/10 hover:text-orange-500 transition-colors border border-transparent hover:border-orange-500/20">
+                        <Button asChild size="lg" variant="ghost" className="h-11 px-8 rounded-full text-sm font-semibold bg-orange-500/10 hover:text-orange-500 transition-colors border border-transparent hover:border-orange-500/20">
                             <Link href="/about">Our Vision</Link>
                         </Button>
                     </div>
