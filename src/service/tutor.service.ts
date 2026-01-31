@@ -1,6 +1,6 @@
 import { env } from "@/env";
 
-const API_URL = env.API_URL
+const API_URL = env.APP_URL
 
 interface ServiceOptions {
     cache?: RequestCache;

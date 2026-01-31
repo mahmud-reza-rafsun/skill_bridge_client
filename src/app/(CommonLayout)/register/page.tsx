@@ -1,9 +1,9 @@
-import React from 'react'
+import RegisterForm from '@/components/modules/authentication/register-form'
 
 export default function Register() {
     return (
-        <div>
-            <h2>Register</h2>
+        <div className='py-12 lg:py-24'>
+            <RegisterForm />
         </div>
     )
 }

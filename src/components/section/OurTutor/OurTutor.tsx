@@ -51,10 +51,9 @@ export default function OutTutor() {
         fetchTutors();
     }, []);
 
-    // --- Radius এবং Size বাড়ানো হয়েছে ---
-    const containerRadius = isMobile ? 140 : 260; // ডেক্সটপে ১৯০ থেকে ২৬০ করা হয়েছে
-    const profileSize = isMobile ? 60 : 85;      // ইমেজ সাইজ কিছুটা বাড়ানো হয়েছে
-    const containerSize = containerRadius * 2 + 160; // বাইরের স্পেস বাড়ানোর জন্য ১৬০ যোগ করা হয়েছে
+    const containerRadius = isMobile ? 140 : 260;
+    const profileSize = isMobile ? 60 : 85;
+    const containerSize = containerRadius * 2 + 160;
 
     const getRotation = useCallback(
         (index: number): number => (index - activeIndex) * (360 / tutors.length),
@@ -67,7 +66,6 @@ export default function OutTutor() {
     if (loading) return <div className="h-[400px] flex items-center justify-center text-orange-500">Loading Tutors...</div>;
 
     return (
-        // py-32 ব্যবহার করে উপরে নিচে স্পেস বাড়ানো হয়েছে
         <section className="flex flex-col items-center py-32 relative min-h-[700px] bg-background overflow-hidden">
 
             {/* Header */}
@@ -82,7 +80,7 @@ export default function OutTutor() {
                 className="relative flex items-center justify-center"
                 style={{ width: containerSize, height: containerSize }}
             >
-                {/* Orbit Path - আরও হালকা এবং বড় */}
+
                 <div
                     className="absolute rounded-full border border-orange-500/10 dark:border-orange-500 shadow-[0_0_50px_rgba(249,115,22,0.03)]"
                     style={{
