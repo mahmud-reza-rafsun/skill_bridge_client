@@ -35,7 +35,7 @@ export default function RegisterForm() {
             name: "",
             email: "",
             password: "",
-            image: "https://example.com/image.png", // Default placeholder
+            image: "https://example.com/image.png",
             phone: "",
         },
         validators: { onSubmit: registerSchema },
@@ -47,8 +47,6 @@ export default function RegisterForm() {
                     password: value.password,
                     name: value.name,
                     image: value.image,
-                    // Better Auth additional fields usually go here
-                    callbackURL: "/register"
                 });
 
                 if (error) {
@@ -68,7 +66,6 @@ export default function RegisterForm() {
         <div className="w-full flex items-center justify-center p-4">
             <div className="w-full max-w-md p-6 space-y-6 bg-white dark:bg-black rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xl">
 
-                {/* Header */}
                 <div className="text-center space-y-2">
                     <div className="inline-flex p-2 bg-zinc-100 dark:bg-zinc-900 rounded-lg">
                         <UserPlusIcon />
@@ -82,9 +79,7 @@ export default function RegisterForm() {
                         e.preventDefault();
                         form.handleSubmit();
                     }}
-                    className="space-y-4"
-                >
-                    {/* Full Name */}
+                    className="space-y-4">
                     <form.Field name="name">
                         {(field) => (
                             <div className="space-y-1.5">

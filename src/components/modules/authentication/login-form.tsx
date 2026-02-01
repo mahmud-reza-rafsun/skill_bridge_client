@@ -221,7 +221,7 @@ export default function LoginForm() {
         try {
             await authClient.signIn.social({
                 provider: "google",
-                callbackURL: "/dashboard",
+                // callbackURL: "http://localhost:3000",
             });
         } catch (err) {
             toast.error("Google login failed");
@@ -247,7 +247,6 @@ export default function LoginForm() {
 
                 toast.success("Logged in successfully", { id: toastId });
                 // Redirect for session sync
-                window.location.assign("/");
             } catch (err) {
                 toast.error("An unexpected error occurred", { id: toastId });
             }

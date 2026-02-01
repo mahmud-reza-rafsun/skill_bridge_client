@@ -8,7 +8,6 @@ interface ServiceOptions {
 }
 
 interface GetTutorParams {
-    isFeatured?: boolean;
     search?: string;
 }
 
