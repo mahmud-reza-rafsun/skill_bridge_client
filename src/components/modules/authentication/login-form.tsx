@@ -60,6 +60,7 @@ export default function LoginForm() {
 
                 toast.success("Logged in successfully", { id: toastId });
                 // Redirect for session sync
+                window.location.href = "/";
             } catch (err) {
                 toast.error("An unexpected error occurred", { id: toastId });
             }

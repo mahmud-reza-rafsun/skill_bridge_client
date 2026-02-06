@@ -1,58 +1,58 @@
-import { AppSidebar } from "@/components/layout/app-sidebar";
+import { Sidebar1 } from "@/components/modules/sidebar/sidebar1";
 import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
     BreadcrumbList,
-    BreadcrumbPage,
     BreadcrumbSeparator,
+    BreadcrumbPage
 } from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
 import {
     SidebarInset,
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
     admin,
-    user,
+    student,
 }: {
-    children: React.ReactNode;
     admin: React.ReactNode;
-    user: React.ReactNode;
+    student: React.ReactNode;
 }) {
-    const userInfo = {
-        role: "admin",
-    };
+    // Replace this with your actual auth logic
+    const userRole: "admin" | "student" = "admin";
 
     return (
         <SidebarProvider>
-            <AppSidebar user={userInfo} />
+            {/* 1. Sidebar */}
+            <Sidebar1 userRole={userRole} />
+
             <SidebarInset>
-                <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+                {/* 2. Header */}
+                <header className="sticky top-0 z-10 bg-background flex h-16 items-center gap-2 px-4 border-b">
                     <SidebarTrigger className="-ml-1" />
-                    <Separator
-                        orientation="vertical"
-                        className="mr-2 data-[orientation=vertical]:h-4"
-                    />
+                    <Separator orientation="vertical" className="mr-2 h-4" />
                     <Breadcrumb>
                         <BreadcrumbList>
-                            <BreadcrumbItem className="hidden md:block">
-                                <BreadcrumbLink href="#">
-                                    Building Your Application
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator className="hidden md:block" />
                             <BreadcrumbItem>
-                                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                                <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>
+                                    {userRole === "admin" ? "Admin" : "Student"}
+                                </BreadcrumbPage>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
                 </header>
-                <div className="flex flex-1 flex-col gap-4 p-4">
-                    {userInfo.role === "admin" ? admin : user}
-                </div>
+
+                {/* 3. Main Content */}
+                <main className="p-4 relative pt-6 min-h-[calc(100vh-4rem)] gradientBg">
+                    {userRole === "admin" ? admin : student}
+                </main>
             </SidebarInset>
         </SidebarProvider>
     );

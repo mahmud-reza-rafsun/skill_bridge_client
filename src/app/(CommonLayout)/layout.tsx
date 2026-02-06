@@ -1,12 +1,17 @@
 import Footer from "@/components/layout/Footer";
-import { Navbar } from "@/components/layout/Navbar"
+import { Navbar } from "@/components/layout/Navbar";
+import { userService } from "@/service/user.service";
 
-export default function CommonLayout({ children, }: { children: React.ReactNode; }) {
+export default async function CommonLayout({ children }: { children: React.ReactNode }) {
+    const sessionResponse = await userService.getSession();
+    const user = sessionResponse?.data?.user || null;
+    console.log("Logged in User:", user);
+
     return (
         <div>
-            <Navbar />
-            {children}
+            <Navbar user={user} />
+            <main>{children}</main>
             <Footer />
         </div>
-    )
+    );
 }
