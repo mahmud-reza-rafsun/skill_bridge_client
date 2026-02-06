@@ -1,6 +1,5 @@
-import { env } from "@/env";
+import { cookies } from "next/headers";
 
-const API_URL = env.APP_URL
 
 interface ServiceOptions {
     cache?: RequestCache;
@@ -11,22 +10,33 @@ interface GetTutorParams {
     search?: string;
 }
 
-export const blogService = {
+export const tutorService = {
     getAllTutors: async function (
         params?: GetTutorParams,
         options?: ServiceOptions,
     ) {
         try {
-            const url = new URL(`${API_URL}/api/tutors`);
+            const url = new URL(`${process.env.BACKEND_URL}/api/tutors`);
 
             if (params) {
                 Object.entries(params).forEach(([key, value]) => {
                     if (value !== undefined && value !== null && value !== "") {
-                        url.searchParams.append(key, value);
+                        url.searchParams.append(key, String(value));
                     }
                 });
             }
-            const config: RequestInit = {};
+
+            const cookieStore = await cookies();
+            const allCookies = cookieStore.toString();
+
+            const config: RequestInit = {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cookie": allCookies,
+                },
+            };
+
             if (options?.cache) {
                 config.cache = options.cache;
             }
@@ -37,17 +47,24 @@ export const blogService = {
 
             const res = await fetch(url.toString(), config);
 
+            if (!res.ok) {
+                const errorResult = await res.json().catch(() => ({}));
+                return {
+                    data: null,
+                    error: { message: errorResult.message || "Unauthorized access" }
+                };
+            }
             const data = await res.json();
-
             return { data: data, error: null };
         } catch (err) {
+            console.error("Fetch Error:", err);
             return { data: null, error: { message: "Something Went Wrong" } };
         }
     },
 
     getTutorById: async function (id: string) {
         try {
-            const res = await fetch(`${API_URL}/api/tutors/${id}`);
+            const res = await fetch(`${process.env.BACKEND_URL}/api/tutors/${id}`);
 
             const data = await res.json();
 

@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
+import Link from "next/link";
 
 interface TutorProps {
     tutor: {
@@ -17,6 +18,7 @@ interface TutorProps {
 }
 
 export function TutorCard({ tutor }: TutorProps) {
+    console.log(tutor)
     const days = Object.keys(tutor.availability);
 
     return (
@@ -30,7 +32,7 @@ export function TutorCard({ tutor }: TutorProps) {
                         ${tutor.hourlyRate.toFixed(2)}<span className="text-xs text-muted-foreground">/hr</span>
                     </div>
                 </div>
-                <h3 className="text-xl font-bold dark:text-zinc-100">Professional Tutor</h3>
+                <h3 className="text-xl font-bold dark:text-zinc-100">{tutor?.categoryName}</h3>
             </CardHeader>
 
             <CardContent className="space-y-4">
@@ -48,7 +50,11 @@ export function TutorCard({ tutor }: TutorProps) {
 
                 <div className="flex items-center gap-2 text-xs text-zinc-500">
                     <Clock className="w-3 h-3 text-orange-500" />
-                    <span className="capitalize">Available: {days.join(", ")}</span>
+                    <span className="capitalize">
+                        Available: {tutor?.availability && Object.keys(tutor.availability).length > 0
+                            ? Object.keys(tutor.availability).map(day => day.slice(0, 3)).join(", ")
+                            : "Not Scheduled"}
+                    </span>
                 </div>
             </CardContent>
 
@@ -56,9 +62,11 @@ export function TutorCard({ tutor }: TutorProps) {
                 <Button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white border-none">
                     Book Now
                 </Button>
-                <Button variant="outline" className="flex-1 border-orange-500 text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20">
-                    Details
-                </Button>
+                <Link href="">
+                    <Button variant="outline" className="flex-1 border-orange-500 text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20">
+                        Details
+                    </Button>
+                </Link>
             </CardFooter>
         </Card>
     );

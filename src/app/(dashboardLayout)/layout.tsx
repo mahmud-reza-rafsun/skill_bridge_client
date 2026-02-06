@@ -26,7 +26,6 @@ export default async function DashboardLayout({
 
     const session = await userService.getSession();
     const userRole = session.data.user.role;
-    console.log(userRole)
 
 
     return (
