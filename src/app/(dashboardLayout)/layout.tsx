@@ -13,6 +13,8 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
+import { userService } from "@/service/user.service";
+import { Roles } from "@/constants/role";
 
 export default async function DashboardLayout({
     admin,
@@ -21,8 +23,11 @@ export default async function DashboardLayout({
     admin: React.ReactNode;
     student: React.ReactNode;
 }) {
-    // Replace this with your actual auth logic
-    const userRole: "admin" | "student" = "admin";
+
+    const session = await userService.getSession();
+    const userRole = session.data.user.role;
+    console.log(userRole)
+
 
     return (
         <SidebarProvider>
@@ -42,7 +47,7 @@ export default async function DashboardLayout({
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
                                 <BreadcrumbPage>
-                                    {userRole === "admin" ? "Admin" : "Student"}
+                                    {userRole === Roles.student ? student : admin}
                                 </BreadcrumbPage>
                             </BreadcrumbItem>
                         </BreadcrumbList>
@@ -51,7 +56,7 @@ export default async function DashboardLayout({
 
                 {/* 3. Main Content */}
                 <main className="p-4 relative pt-6 min-h-[calc(100vh-4rem)] gradientBg">
-                    {userRole === "admin" ? admin : student}
+                    {userRole === Roles.student ? student : admin}
                 </main>
             </SidebarInset>
         </SidebarProvider>

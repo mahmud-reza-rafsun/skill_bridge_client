@@ -7,9 +7,8 @@ export const userService = {
     getSession: async function () {
         try {
             const cookieStore = await cookies();
-            const allCookies = cookieStore.toString(); // Next.js 15 এ এটি স্ট্রিং দেয়
+            const allCookies = cookieStore.toString();
 
-            // Debugging এর জন্য console.log দিন
             console.log("Sending Cookies to Backend:", allCookies);
 
             const res = await fetch(`${process.env.AUTH_URL}/get-session`, {
