@@ -64,13 +64,28 @@ export const tutorService = {
 
     getTutorById: async function (id: string) {
         try {
-            const res = await fetch(`${process.env.BACKEND_URL}/api/tutors/${id}`);
+            const res = await fetch(`${process.env.BACKEND_URL}/api/tutors/${id}`, {
+                // ১. নেক্সট জেএস যাতে ক্যাশ ধরে না রাখে (লেটেস্ট ডাটার জন্য)
+                cache: "no-store",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            // ২. যদি এপিআই থেকে ৪০৪ বা ৫০০ এরর আসে
+            if (!res.ok) {
+                return { data: null, error: { message: "Failed to fetch tutor data" } };
+            }
 
             const data = await res.json();
 
+            // ৩. আপনার ব্যাকএন্ড রেসপন্স যদি { success: true, data: { ... } } ফরম্যাটে হয়
             return { data: data, error: null };
-        } catch (err) {
-            return { data: null, error: { message: "Something Went Wrong" } };
+
+        } catch (err: any) {
+            console.error("Fetch Error:", err.message);
+            return { data: null, error: { message: err.message || "Something Went Wrong" } };
         }
     },
 };

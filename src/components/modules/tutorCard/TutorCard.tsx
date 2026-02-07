@@ -4,21 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
 import Link from "next/link";
+import { TutorProps } from "@/types/tutor.types";
+import { useState } from "react";
+import BookingModal from "@/app/(CommonLayout)/tutors/bookingModal/BookingModal";
 
-interface TutorProps {
-    tutor: {
-        categoryName: string;
-        bio: string;
-        hourlyRate: number;
-        subject: string[];
-        availability: {
-            [key: string]: string[];
-        };
-    };
-}
 
 export function TutorCard({ tutor }: TutorProps) {
-    console.log(tutor)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
     const days = Object.keys(tutor.availability);
 
     return (
@@ -59,15 +52,20 @@ export function TutorCard({ tutor }: TutorProps) {
             </CardContent>
 
             <CardFooter className="flex gap-2">
-                <Button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white border-none">
+                <Button onClick={() => setIsModalOpen(true)} className="flex-1 bg-orange-500 hover:bg-orange-600 text-white border-none">
                     Book Now
                 </Button>
-                <Link href="">
+                <Link href={`/tutors/${tutor.id}`}>
                     <Button variant="outline" className="flex-1 border-orange-500 text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20">
                         Details
                     </Button>
                 </Link>
             </CardFooter>
+            <BookingModal
+                tutor={tutor}
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </Card>
     );
 }

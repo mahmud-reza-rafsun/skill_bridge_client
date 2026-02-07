@@ -4,10 +4,9 @@ import { tutorService } from '@/service/tutor.service';
 export default async function TutorPage() {
 
     const response = await tutorService.getAllTutors();
-    console.log(response)
 
-    const tutors = response?.data?.data || response?.data || [];
-    console.log(tutors)
+    const tutors = response?.data.data
+    // console.log(tutors)
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-black p-6 md:p-12">
@@ -16,7 +15,7 @@ export default async function TutorPage() {
                     {tutors && tutors.length > 0 ? (
                         tutors.map((tutor: any) => (
 
-                            <TutorCard key={tutor.id || tutor._id} tutor={tutor} />
+                            <TutorCard key={tutor.id || tutor.id} tutor={tutor} />
                         ))
                     ) : (
                         <div className="col-span-full text-center py-20 text-zinc-500">
