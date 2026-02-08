@@ -1,6 +1,7 @@
 import { env } from "@/env";
 import { cookies } from "next/headers";
 
+
 const AUTH_URL = env.AUTH_URL
 
 export const userService = {
@@ -11,7 +12,7 @@ export const userService = {
 
             console.log("Sending Cookies to Backend:", allCookies);
 
-            const res = await fetch(`${process.env.AUTH_URL}/get-session`, {
+            const res = await fetch(`${AUTH_URL}/get-session`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Cookie": allCookies,

@@ -44,11 +44,6 @@ export default async function DashboardLayout({
                                 <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
-                            <BreadcrumbItem>
-                                <BreadcrumbPage>
-                                    {userRole === Roles.student ? student : admin}
-                                </BreadcrumbPage>
-                            </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
                 </header>
