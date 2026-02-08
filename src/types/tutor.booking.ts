@@ -11,8 +11,11 @@ export interface BookingCardProps {
         totalAmmount: number;
         startTime: string;
         endTime: string;
-        tutorId?: {
-            name: string;
+        tutor: {
+            categoryName: string;
+            bio: string,
+            hourlyRate: number
+            subject: []
         };
     };
 }

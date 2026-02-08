@@ -49,8 +49,8 @@ const sidebarConfig = {
     items: [
       { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
       { label: "My Bookings", icon: BookOpen, href: "/my-bookings" },
-      { label: "Explore Tutors", icon: Users, href: "/tutors" },
-      { label: "Profile", icon: UserPen, href: "/dashboard/profile" },
+      { label: "Become a Tutor", icon: Users, href: "/become-tutor" },
+      { label: "Profile", icon: UserPen, href: "/profile" },
     ],
   },
 };

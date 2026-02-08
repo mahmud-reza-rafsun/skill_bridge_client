@@ -5,7 +5,6 @@ import {
     BreadcrumbLink,
     BreadcrumbList,
     BreadcrumbSeparator,
-    BreadcrumbPage
 } from "@/components/ui/breadcrumb";
 import {
     SidebarInset,

@@ -1,3 +1,4 @@
+import { env } from "@/env";
 import { cookies } from "next/headers";
 
 
@@ -9,6 +10,8 @@ interface ServiceOptions {
 interface GetTutorParams {
     search?: string;
 }
+
+const BACKEND_URL = env.BACKEND_URL
 
 export const tutorService = {
     getAllTutors: async function (
@@ -85,4 +88,5 @@ export const tutorService = {
             return { data: null, error: { message: err.message || "Something Went Wrong" } };
         }
     },
+
 };

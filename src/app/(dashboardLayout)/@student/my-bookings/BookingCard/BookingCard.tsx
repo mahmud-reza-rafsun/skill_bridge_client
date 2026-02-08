@@ -2,6 +2,7 @@ import { BookingCardProps } from "@/types/tutor.booking";
 import { Calendar, Clock, DollarSign } from "lucide-react";
 
 export default function BookingCard({ booking }: BookingCardProps) {
+    console.log(booking)
     const date = new Date(booking.startTime).toLocaleDateString("en-GB", {
         day: "numeric", month: "short", year: "numeric",
     });
@@ -19,8 +20,9 @@ export default function BookingCard({ booking }: BookingCardProps) {
                 {/* Tutor info */}
                 <div className="flex-1">
                     <h3 className="text-xl font-black text-zinc-800 dark:text-zinc-100 mb-2 uppercase tracking-tight">
-                        {booking.tutorId?.name || "Private Tutor"}
+                        {booking.tutor.categoryName || "Private Tutor"}
                     </h3>
+                    <p>{booking.tutor.bio}</p>
                     <div className="flex flex-wrap gap-4 text-sm font-bold text-zinc-500">
                         <div className="flex items-center gap-1.5 text-orange-600">
                             <Calendar className="w-4 h-4" />
@@ -33,12 +35,21 @@ export default function BookingCard({ booking }: BookingCardProps) {
                     </div>
                 </div>
 
+                <div>
+                    {booking.tutor.subject.map((s, idx) => <span key={idx} className={`px-4 py-1 rounded-xl text-[11px] font-black uppercase tracking-tighter border ${booking.status === 'CONFIRMED'
+                        ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800'
+                        : 'bg-zinc-100 text-zinc-500 border-zinc-200'
+                        }`}>
+                        {s}
+                    </span>)}
+                </div>
+
                 {/* Amount */}
                 <div className="bg-zinc-50 dark:bg-zinc-800/50 px-6 py-3 rounded-2xl flex flex-col justify-center border border-zinc-100 dark:border-zinc-800">
                     <span className="text-[10px] font-black uppercase text-zinc-400 tracking-widest">Total Paid</span>
                     <div className="text-2xl font-black text-zinc-900 dark:text-white flex items-center">
                         <DollarSign className="w-4 h-4 text-green-500" />
-                        {booking.totalAmmount}
+                        {booking.tutor.hourlyRate}
                     </div>
                 </div>
 
