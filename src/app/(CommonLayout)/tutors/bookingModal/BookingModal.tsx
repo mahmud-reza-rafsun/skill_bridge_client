@@ -41,7 +41,7 @@ export default function BookingModal({ tutor, isOpen, onClose }: BookingModalPro
             }
         } catch (err) {
             console.error(err);
-            toast.error("❌ Something went wrong!");
+            toast.error("Something went wrong!");
         } finally {
             setIsSubmitting(false);
         }

@@ -69,7 +69,7 @@ function StatCard({
 // ==============================
 // Main Component
 // ==============================
-export default function AdminDashboard() {
+export default function TutorDashboard() {
     const [mounted, setMounted] = React.useState(false)
 
     React.useEffect(() => {

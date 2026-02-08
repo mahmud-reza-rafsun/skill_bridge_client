@@ -18,13 +18,15 @@ import { Roles } from "@/constants/role";
 export default async function DashboardLayout({
     admin,
     student,
+    tutor
 }: {
     admin: React.ReactNode;
     student: React.ReactNode;
+    tutor: React.ReactNode;
 }) {
 
     const session = await userService.getSession();
-    const userRole = session.data.user.role;
+    const userRole = session?.data?.user ? session.data.user.role : null;
 
 
     return (
@@ -49,7 +51,7 @@ export default async function DashboardLayout({
 
                 {/* 3. Main Content */}
                 <main className="p-4 relative pt-6 min-h-[calc(100vh-4rem)] gradientBg">
-                    {userRole === Roles.student ? student : admin}
+                    {userRole === Roles.student ? student : userRole === Roles.admin ? admin : tutor}
                 </main>
             </SidebarInset>
         </SidebarProvider>
