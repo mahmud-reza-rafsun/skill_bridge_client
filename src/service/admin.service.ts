@@ -116,5 +116,35 @@ export const adminService = {
             return { data: null, error: { message: "Something Went Wrong" } };
         }
     },
+    getAllStat: async function () {
+        try {
+            const url = `${process.env.BACKEND_URL}/api/admin/stats`;
+            const cookieStore = await cookies();
+            const token = cookieStore.get("accessToken")?.value;
 
+            const res = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                cache: "no-store"
+            });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                return {
+                    data: null,
+                    error: { message: result.message || "Unauthorized access" }
+                };
+            }
+
+            return { data: result.data, error: null };
+
+        } catch (err) {
+            console.error("Fetch Error:", err);
+            return { data: null, error: { message: "Something Went Wrong" } };
+        }
+    },
 };
