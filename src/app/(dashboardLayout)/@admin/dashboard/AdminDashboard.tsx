@@ -61,8 +61,7 @@ function StatCard({
 }
 
 export default function AdminDashboard(props: StatsData) {
-    const statsData = props
-    console.log(statsData)
+    console.log(props)
     const [mounted, setMounted] = React.useState(false)
 
     React.useEffect(() => {
