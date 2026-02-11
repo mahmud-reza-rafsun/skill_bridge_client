@@ -20,9 +20,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
-// ==============================
-// Demo Data
-// ==============================
 const revenueData = [
     { month: "Jan", value: 12000 },
     { month: "Feb", value: 18000 },
@@ -41,9 +38,6 @@ const ordersData = [
     { month: "Jun", value: 420 },
 ]
 
-// ==============================
-// Small reusable stat card
-// ==============================
 function StatCard({
     title,
     value,
@@ -66,9 +60,6 @@ function StatCard({
     )
 }
 
-// ==============================
-// Main Component
-// ==============================
 export default function AdminDashboard() {
     const [mounted, setMounted] = React.useState(false)
 
@@ -76,7 +67,6 @@ export default function AdminDashboard() {
         setMounted(true)
     }, [])
 
-    // 🔥 prevent SSR render
     if (!mounted) return null
 
     return (
