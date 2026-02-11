@@ -32,7 +32,7 @@ const sidebarConfig = {
       { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
       { label: "Total Users", icon: Users, href: "/total-user" },
       { label: "Total Bookings", icon: CalendarCheck, href: "/total-booking" },
-      { label: "Manage category", icon: ChartBarStacked, href: "/dashboard/categories" },
+      { label: "Manage category", icon: ChartBarStacked, href: "/manage-category" },
     ],
   },
   tutor: {
