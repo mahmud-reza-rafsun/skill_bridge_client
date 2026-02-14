@@ -1,4 +1,5 @@
 import { Sidebar1 } from "@/components/modules/sidebar/sidebar1";
+export const dynamic = "force-dynamic";
 import {
     Breadcrumb,
     BreadcrumbItem,

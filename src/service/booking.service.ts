@@ -1,6 +1,6 @@
 export const bookingService = {
     createBooking: async (tutorId: string, bookingData: any) => {
-        const res = await fetch(`http://localhost:5000/api/bookings/${tutorId}`, {
+        const res = await fetch(`${process.env.BACKEND_URL}/api/bookings/${tutorId}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -17,7 +17,7 @@ export const bookingService = {
 
     getMyBookings: async (studentId: string) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/bookings/${studentId}`, {
+            const res = await fetch(`${process.env.BACKEND_URL}/api/bookings/${studentId}`, {
                 method: "GET",
                 credentials: "include",
             });

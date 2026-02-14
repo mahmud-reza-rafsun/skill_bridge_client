@@ -2,6 +2,7 @@ import { adminService } from "@/service/admin.service";
 import CategoryPostForm from "./CategoryPostForm";
 import CategoryCard from "./CategoryCard";
 import { cookies } from "next/headers";
+export const dynamic = "force-dynamic";
 
 export default async function ManageCategoryPage() {
     const cookieStore = await cookies();

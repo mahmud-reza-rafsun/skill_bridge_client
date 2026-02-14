@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { UserRoundX, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { env } from '@/env'
+
+const BACKEND_URL = env.BACKEND_URL;
 
 export default function ActionButton({ userId, currentStatus }: { userId: string, currentStatus: string }) {
     const router = useRouter()
@@ -21,7 +24,7 @@ export default function ActionButton({ userId, currentStatus }: { userId: string
 
         setIsLoading(true)
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/${id}`, {
+            const response = await fetch(`${BACKEND_URL}/api/admin/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

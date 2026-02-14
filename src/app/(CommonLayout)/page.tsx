@@ -3,7 +3,7 @@ import FaqSection from "@/components/section/FaqSection/FaqSection";
 import FeedBackSection from "@/components/section/FeedBackSection/StudentFeedBackSection";
 import { HeroSection } from "@/components/section/HeroSectoon/HeroSectoon";
 import OutTutor from "@/components/section/OurTutor/OurTutor";
-
+export const dynamic = "force-dynamic";
 
 
 export default async function Home() {

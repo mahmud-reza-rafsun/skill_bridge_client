@@ -11,8 +11,6 @@ interface GetTutorParams {
     search?: string;
 }
 
-const BACKEND_URL = env.BACKEND_URL
-
 export const tutorService = {
     getAllTutors: async function (
         params?: GetTutorParams,

@@ -1,7 +1,7 @@
 export const becomeATutorSerive = {
     becomeTutor: async (finalData: any) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/tutors`, {
+            const res = await fetch(`${process.env.BACKEND_URL}/api/tutors`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
