@@ -6,7 +6,7 @@ import { UserRoundX, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { env } from '@/env'
 
-const BACKEND_URL = env.BACKEND_URL;
+const BACKEND_URL = env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function ActionButton({ userId, currentStatus }: { userId: string, currentStatus: string }) {
     const router = useRouter()

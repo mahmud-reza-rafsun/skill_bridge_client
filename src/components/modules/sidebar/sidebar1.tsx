@@ -39,9 +39,9 @@ const sidebarConfig = {
     title: "Tutor Menu",
     items: [
       { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-      { label: "Availability", icon: ClipboardList, href: "/dashboard/availability" },
-      { label: "My Students", icon: GraduationCap, href: "/dashboard/my-students" },
-      { label: "Profile", icon: UserPen, href: "/dashboard/profile" },
+      { label: "Availability", icon: ClipboardList, href: "/availability" },
+      { label: "My Students", icon: GraduationCap, href: "/my-students" },
+      { label: "Profile", icon: UserPen, href: "/profile" },
     ],
   },
   student: {
