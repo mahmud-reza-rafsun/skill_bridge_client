@@ -10,8 +10,6 @@ export const userService = {
             const cookieStore = await cookies();
             const allCookies = cookieStore.toString();
 
-            console.log("Sending Cookies to Backend:", allCookies);
-
             const res = await fetch(`${AUTH_URL}/get-session`, {
                 headers: {
                     "Content-Type": "application/json",

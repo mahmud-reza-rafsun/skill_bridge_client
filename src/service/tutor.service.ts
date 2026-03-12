@@ -1,6 +1,4 @@
-import { env } from "@/env";
 import { cookies } from "next/headers";
-
 
 interface ServiceOptions {
     cache?: RequestCache;
@@ -86,5 +84,4 @@ export const tutorService = {
             return { data: null, error: { message: err.message || "Something Went Wrong" } };
         }
     },
-
 };

@@ -45,7 +45,7 @@ export default function BecomeTutor() {
 
             if (res) {
                 toast("Success! Application Submitted.");
-                router.push("/tutor-dashboard");
+                router.push("/dashboard");
             }
         } catch (error: any) {
             console.error("Error:", error);
