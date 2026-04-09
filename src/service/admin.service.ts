@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 const BACKEND_URL = env.BACKEND_URL;
 
-export const tutorsService = {
+export const adminService = {
     getAdminStat: async () => {
         try {
             const cookieStore = await cookies();

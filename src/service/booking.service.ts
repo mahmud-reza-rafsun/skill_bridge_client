@@ -30,48 +30,28 @@ export const bookingService = {
             return { success: false, error: error.message || "Network Error" };
         }
     },
-    // getCommentsByIdeaId: async function (ideaId: string) {
-    //     try {
-    //         const cookieStore = await cookies();
+    getMyBookings: async function () {
+        try {
+            const cookieStore = await cookies();
 
-    //         const res = await fetch(`${BACKEND_URL}/api/v1/comment/get-comments/${ideaId}`, {
-    //             method: "GET",
-    //             headers: {
-    //                 "Cookie": cookieStore.toString(),
-    //             },
-    //             cache: "no-store",
-    //         });
+            const res = await fetch(`${BACKEND_URL}/api/bookings/get-my-booking`, {
+                method: "GET",
+                headers: {
+                    "Cookie": cookieStore.toString(),
+                },
+                cache: "no-store",
+            });
 
-    //         const result = await res.json();
+            const result = await res.json();
+            if (!res.ok) {
+                console.error("Fetch failed:", result.message);
+                return { data: [], error: result.message || "Failed to fetch" };
+            }
 
-    //         if (!res.ok) {
-    //             console.error("Fetch failed:", result.message);
-    //             return { data: [], error: result.message || "Failed to fetch" };
-    //         }
-
-    //         return { data: result.data || [], error: null };
-    //     } catch (error) {
-    //         console.error("Connection Error:", error);
-    //         return { data: [], error: "Connection Error" };
-    //     }
-    // },
-
-    // updateComment: async function (commentId: string, payload: { content: string }) {
-    //     try {
-    //         const cookieStore = await cookies();
-    //         const res = await fetch(`${BACKEND_URL}/api/v1/comment/update-comment/${commentId}`, {
-    //             method: "PATCH",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 "Cookie": cookieStore.toString(),
-    //             },
-    //             body: JSON.stringify(payload),
-    //         });
-    //         const result = await res.json();
-    //         if (!res.ok) return { success: false, error: result.message || "Update failed" };
-    //         return { success: true };
-    //     } catch (error) {
-    //         return { success: false, error: "Connection Error" };
-    //     }
-    // },
+            return { data: result.data || [], error: null };
+        } catch (error) {
+            console.error("Connection Error:", error);
+            return { data: [], error: "Connection Error" };
+        }
+    },
 };

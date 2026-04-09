@@ -2,7 +2,7 @@ import { adminService } from "@/service/admin.service";
 import AdminDashboard from "./AdminDashboard";
 
 export default async function DashboardPage() {
-    const response = await adminService.getAllStat();
+    const response = await adminService.getAdminStat();
     const dynamicStats = response?.data
     console.log(dynamicStats)
 
