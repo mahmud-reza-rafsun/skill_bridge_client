@@ -6,7 +6,6 @@ export const dynamic = "force-dynamic";
 export default async function CommonLayout({ children }: { children: React.ReactNode }) {
     const sessionResponse = await userService.getSession();
     const user = sessionResponse?.data?.user || undefined;
-
     return (
         <div>
             <Navbar user={user} />

@@ -9,6 +9,20 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "example.com",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "i.ibb.co",
+        pathname: "**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

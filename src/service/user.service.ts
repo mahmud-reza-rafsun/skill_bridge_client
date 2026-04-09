@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { env } from "@/env";
 import { cookies } from "next/headers";
-
 
 const AUTH_URL = env.AUTH_URL
 
@@ -20,15 +21,13 @@ export const userService = {
 
             if (!res.ok) {
                 const errorText = await res.text();
-                console.error("Backend Response Error:", errorText);
                 return { data: null, error: "Failed to fetch session" };
             }
 
             const session = await res.json();
             return { data: session, error: null };
-        } catch (err) {
-            console.error("Connection Error:", err);
+        } catch (error) {
             return { data: null, error: "Something Went Wrong" };
         }
     },
-};
+}

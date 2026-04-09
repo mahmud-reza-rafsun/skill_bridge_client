@@ -1,4 +1,4 @@
-import MyStudentRow from "./MyStudentTable";
+import MyBookingRow from "./MyBookingTable";
 
 const bookings = [
     {
@@ -57,7 +57,7 @@ export default function BookingsPage() {
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="border-b border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50">
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Name</th>
+                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Tutor / Subject</th>
                                     <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Schedule</th>
                                     <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Amount</th>
                                     <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Status</th>
@@ -66,7 +66,7 @@ export default function BookingsPage() {
                             </thead>
                             <tbody className="divide-y divide-zinc-100 dark:divide-zinc-900">
                                 {bookings.map((booking, index) => (
-                                    <MyStudentRow
+                                    <MyBookingRow
                                         key={booking.id}
                                         booking={booking}
                                         index={index}

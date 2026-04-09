@@ -1,87 +1,32 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { env } from "@/env";
 import { cookies } from "next/headers";
 
-interface ServiceOptions {
-    cache?: RequestCache;
-    revalidate?: number;
-}
+const BACKEND_URL = env.BACKEND_URL;
 
-interface GetTutorParams {
-    search?: string;
-}
-
-export const tutorService = {
-    getAllTutors: async function (
-        params?: GetTutorParams,
-        options?: ServiceOptions,
-    ) {
+export const tutorsService = {
+    getAllTutors: async () => {
         try {
-            const url = new URL(`${process.env.BACKEND_URL}/api/tutors`);
-
-            if (params) {
-                Object.entries(params).forEach(([key, value]) => {
-                    if (value !== undefined && value !== null && value !== "") {
-                        url.searchParams.append(key, String(value));
-                    }
-                });
-            }
-
             const cookieStore = await cookies();
-            const allCookies = cookieStore.toString();
 
-            const config: RequestInit = {
+            const res = await fetch(`${BACKEND_URL}/api/tutors/get-all-tutors`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Cookie": allCookies,
+                    "Cookie": cookieStore.toString(),
                 },
-            };
-
-            if (options?.cache) {
-                config.cache = options.cache;
-            }
-
-            if (options?.revalidate) {
-                config.next = { revalidate: options.revalidate };
-            }
-
-            const res = await fetch(url.toString(), config);
-
-            if (!res.ok) {
-                const errorResult = await res.json().catch(() => ({}));
-                return {
-                    data: null,
-                    error: { message: errorResult.message || "Unauthorized access" }
-                };
-            }
-            const data = await res.json();
-            return { data: data, error: null };
-        } catch (err) {
-            console.error("Fetch Error:", err);
-            return { data: null, error: { message: "Something Went Wrong" } };
-        }
-    },
-
-    getTutorById: async function (id: string) {
-        try {
-            const res = await fetch(`${process.env.BACKEND_URL}/api/tutors/${id}`, {
-                cache: "no-store",
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                next: { revalidate: 60 }
             });
 
+            const result = await res.json();
+
             if (!res.ok) {
-                return { data: null, error: { message: "Failed to fetch tutor data" } };
+                return { data: [], error: result.message || "Unauthorized access!" };
             }
 
-            const data = await res.json();
-
-            return { data: data, error: null };
-
-        } catch (err: any) {
-            console.error("Fetch Error:", err.message);
-            return { data: null, error: { message: err.message || "Something Went Wrong" } };
+            return { data: result.data, error: null };
+        } catch (error) {
+            return { data: [], error: "Something Went Wrong" };
         }
     },
 };

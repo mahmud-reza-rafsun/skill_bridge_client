@@ -1,62 +1,77 @@
-export const bookingService = {
-    createBooking: async (tutorId: string, bookingData: any) => {
-        const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { cookies } from "next/headers";
 
+const BACKEND_URL = process.env.BACKEND_URL;
+
+export const bookingService = {
+    createBookings: async function (tutorId: string, totalAmount: number) {
         try {
-            const res = await fetch(`${baseUrl}/api/bookings/${tutorId}`, {
+            const cookieStore = await cookies();
+            const url = `${BACKEND_URL}/api/bookings/${tutorId}`;
+
+            const res = await fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Cookie": cookieStore.toString(),
                 },
-                body: JSON.stringify(bookingData),
-                credentials: "include"
+                body: JSON.stringify({
+                    totalAmount: totalAmount,
+                }),
             });
 
-            const contentType = res.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                throw new Error("Server returned an invalid response (HTML instead of JSON). Check your API URL.");
-            }
-
             const result = await res.json();
+            if (!res.ok) throw new Error(result.message || "Failed to create booking");
 
-            if (!res.ok) {
-                throw new Error(result.message || "Booking failed! Please check if you are logged in.");
-            }
-
-            return result;
-
+            return { success: true, data: result.data };
         } catch (error: any) {
-            console.error("Booking Service Error:", error);
-            throw error;
+            console.error("❌ API Fetch Error:", error.message);
+            return { success: false, error: error.message || "Network Error" };
         }
     },
+    // getCommentsByIdeaId: async function (ideaId: string) {
+    //     try {
+    //         const cookieStore = await cookies();
 
-    getMyBookings: async (studentId: string) => {
-        try {
-            const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+    //         const res = await fetch(`${BACKEND_URL}/api/v1/comment/get-comments/${ideaId}`, {
+    //             method: "GET",
+    //             headers: {
+    //                 "Cookie": cookieStore.toString(),
+    //             },
+    //             cache: "no-store",
+    //         });
 
-            const res = await fetch(`${baseUrl}/api/bookings/${studentId}`, {
-                method: "GET",
-                credentials: "include",
-            });
+    //         const result = await res.json();
 
-            const contentType = res.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                console.error("Received non-JSON response");
-                throw new Error("Server is not Responsed");
-            }
+    //         if (!res.ok) {
+    //             console.error("Fetch failed:", result.message);
+    //             return { data: [], error: result.message || "Failed to fetch" };
+    //         }
 
-            const result = await res.json();
+    //         return { data: result.data || [], error: null };
+    //     } catch (error) {
+    //         console.error("Connection Error:", error);
+    //         return { data: [], error: "Connection Error" };
+    //     }
+    // },
 
-            if (!res.ok) {
-                throw new Error(result.message || "Failed to fetch bookings");
-            }
-
-            return result.data || result;
-
-        } catch (error: any) {
-            console.error("Fetch error:", error);
-            throw error;
-        }
-    }
+    // updateComment: async function (commentId: string, payload: { content: string }) {
+    //     try {
+    //         const cookieStore = await cookies();
+    //         const res = await fetch(`${BACKEND_URL}/api/v1/comment/update-comment/${commentId}`, {
+    //             method: "PATCH",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "Cookie": cookieStore.toString(),
+    //             },
+    //             body: JSON.stringify(payload),
+    //         });
+    //         const result = await res.json();
+    //         if (!res.ok) return { success: false, error: result.message || "Update failed" };
+    //         return { success: true };
+    //     } catch (error) {
+    //         return { success: false, error: "Connection Error" };
+    //     }
+    // },
 };

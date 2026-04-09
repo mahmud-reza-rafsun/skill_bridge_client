@@ -116,6 +116,7 @@ export const Navbar = ({
                   <DropdownMenuLabel className="p-3">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-semibold text-foreground">{user.name}</p>
+                      <p className="text-xs text-black">{user.role}</p>
                       <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                     </div>
                   </DropdownMenuLabel>

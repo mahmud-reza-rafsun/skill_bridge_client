@@ -25,6 +25,7 @@ const registerSchema = z.object({
     password: z.string().min(8, "Password must be at least 8 characters"),
     image: z.string().url("Invalid image URL"),
     phone: z.string().min(11, "Enter a valid phone number"),
+    role: z.enum(["STUDENT", "TUTOR"]), // Added role validation
 });
 
 export default function RegisterForm() {
@@ -35,8 +36,9 @@ export default function RegisterForm() {
             name: "",
             email: "",
             password: "",
-            image: "https://example.com/image.png",
+            image: "https://i.ibb.co.com/p6pfFmGm/513825731-2847150715478167-5928718152068675100-n.jpg",
             phone: "",
+            role: "STUDENT" as "STUDENT" | "TUTOR",
         },
         validators: { onSubmit: registerSchema },
         onSubmit: async ({ value }) => {
@@ -47,6 +49,11 @@ export default function RegisterForm() {
                     password: value.password,
                     name: value.name,
                     image: value.image,
+                    // better-auth supports additional fields like phone and role in the body
+                    // Ensure your better-auth config includes these in 'user' schema
+                    // @ts-ignore
+                    phone: value.phone,
+                    role: value.role,
                 });
 
                 if (error) {
@@ -55,7 +62,7 @@ export default function RegisterForm() {
                 }
 
                 toast.success("Account created successfully!", { id: toastId });
-                window.location.assign("/dashboard");
+                window.location.assign("/login");
             } catch (err) {
                 toast.error("An unexpected error occurred", { id: toastId });
             }
@@ -80,6 +87,8 @@ export default function RegisterForm() {
                         form.handleSubmit();
                     }}
                     className="space-y-4">
+
+                    {/* Name */}
                     <form.Field name="name">
                         {(field) => (
                             <div className="space-y-1.5">
@@ -88,7 +97,7 @@ export default function RegisterForm() {
                                     value={field.state.value}
                                     onBlur={field.handleBlur}
                                     onChange={(e) => field.handleChange(e.target.value)}
-                                    placeholder="Rafsun"
+                                    placeholder="Mahmud Reza"
                                     className="w-full h-10 px-3 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:ring-2 focus:ring-zinc-500 outline-none transition-all"
                                 />
                                 {field.state.meta.errors.length > 0 && (
@@ -109,7 +118,7 @@ export default function RegisterForm() {
                                         onBlur={field.handleBlur}
                                         onChange={(e) => field.handleChange(e.target.value)}
                                         type="email"
-                                        placeholder="rafsun@example.com"
+                                        placeholder="tutor@skill-bridge.com"
                                         className="w-full h-10 px-3 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:ring-2 focus:ring-zinc-500 outline-none transition-all"
                                     />
                                     {field.state.meta.errors.length > 0 && (
@@ -128,7 +137,7 @@ export default function RegisterForm() {
                                         value={field.state.value}
                                         onBlur={field.handleBlur}
                                         onChange={(e) => field.handleChange(e.target.value)}
-                                        placeholder="01628..."
+                                        placeholder="01628745520"
                                         className="w-full h-10 px-3 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:ring-2 focus:ring-zinc-500 outline-none transition-all"
                                     />
                                     {field.state.meta.errors.length > 0 && (
@@ -139,18 +148,19 @@ export default function RegisterForm() {
                         </form.Field>
                     </div>
 
-                    {/* Image URL */}
-                    <form.Field name="image">
+                    {/* Role Selection */}
+                    <form.Field name="role">
                         {(field) => (
                             <div className="space-y-1.5">
-                                <label className="text-sm font-medium">Profile Image URL</label>
-                                <input
+                                <label className="text-sm font-medium">Register as</label>
+                                <select
                                     value={field.state.value}
-                                    onBlur={field.handleBlur}
-                                    onChange={(e) => field.handleChange(e.target.value)}
-                                    placeholder="https://example.com/image.png"
-                                    className="w-full h-10 px-3 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:ring-2 focus:ring-zinc-500 outline-none transition-all"
-                                />
+                                    onChange={(e) => field.handleChange(e.target.value as any)}
+                                    className="w-full h-10 px-3 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black text-sm focus:ring-2 focus:ring-zinc-500 outline-none transition-all"
+                                >
+                                    <option value="STUDENT">Student</option>
+                                    <option value="TUTOR">Tutor</option>
+                                </select>
                             </div>
                         )}
                     </form.Field>

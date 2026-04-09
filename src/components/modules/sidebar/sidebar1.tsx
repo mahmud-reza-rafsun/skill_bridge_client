@@ -39,7 +39,7 @@ const sidebarConfig = {
     title: "Tutor Menu",
     items: [
       { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-      { label: "Availability", icon: ClipboardList, href: "/availability" },
+      { label: "My Bookings", icon: ClipboardList, href: "/my-bookings" },
       { label: "My Students", icon: GraduationCap, href: "/my-students" },
       { label: "Profile", icon: UserPen, href: "/profile" },
     ],
@@ -64,12 +64,7 @@ const LogoIcon = () => (
   </svg>
 );
 
-export const Sidebar1 = ({
-  userRole,
-  ...props
-}: {
-  userRole?: string;
-} & React.ComponentProps<typeof Sidebar>) => {
+export const Sidebar1 = ({ userRole, ...props }: { userRole?: string; } & React.ComponentProps<typeof Sidebar>) => {
   const pathname = usePathname();
 
   const normalizedRole = userRole?.toLowerCase() || "student";

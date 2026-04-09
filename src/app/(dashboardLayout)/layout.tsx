@@ -32,9 +32,7 @@ export default async function DashboardLayout({
 
     return (
         <SidebarProvider>
-            {/* 1. Sidebar */}
             <Sidebar1 userRole={userRole} />
-
             <SidebarInset>
                 {/* 2. Header */}
                 <header className="sticky top-0 z-10 bg-background flex h-16 items-center gap-2 px-4 border-b">

@@ -1,10 +1,10 @@
 "use client";
 
-import { bookingService } from "@/service/booking.service";
 import { BookingModalProps } from "@/types/tutor.booking";
 import { X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { createBookingAction } from "./BookingModalAction";
 
 export default function BookingModal({ tutor, isOpen, onClose }: BookingModalProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,31 +16,19 @@ export default function BookingModal({ tutor, isOpen, onClose }: BookingModalPro
         e.preventDefault();
         setIsSubmitting(true);
 
-        const formData = new FormData(e.currentTarget);
-        const tutorId = tutor.userId || tutor._id || tutor.id;
-
-        const bookingData = {
-            userId: tutorId,
-            startTime: new Date(formData.get("startTime") as string).toISOString(),
-            endTime: new Date(formData.get("endTime") as string).toISOString(),
-            totalAmmount: Number(tutor.hourlyRate),
-            status: "CONFIRMED",
-        };
+        const tutorProfileId = tutor.id;
+        const amount = Number(tutor.hourlyRate);
 
         try {
-            console.log("Submitting to API...", bookingData);
+            const res = await createBookingAction(tutorProfileId, amount);
 
-
-            const res = await bookingService.createBooking(tutorId, bookingData);
-
-            if (res.success || res.data) {
-                toast.success("Booking CONFIRMED successfully!");
+            if (res.success) {
+                toast.success("Booking confirmed successfully!");
                 onClose();
             } else {
-                toast.error((res.message || "Unknown error"));
+                toast.error(res.error || "Failed to book");
             }
         } catch (err) {
-            console.error(err);
             toast.error("Something went wrong!");
         } finally {
             setIsSubmitting(false);
@@ -55,21 +43,10 @@ export default function BookingModal({ tutor, isOpen, onClose }: BookingModalPro
                     <X className="w-5 h-5" />
                 </button>
 
-                <h2 className="text-2xl font-black mb-1">Book a Session</h2>
+                <h2 className="text-2xl font-black mb-1">Book This Tutor</h2>
                 <p className="text-zinc-500 text-sm mb-6">Rate: <span className="text-orange-600 font-bold">${tutor?.hourlyRate}/hr</span></p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1">
-                            <label className="text-[10px] font-bold uppercase tracking-widest ml-1 block">Start Time</label>
-                            <input name="startTime" type="datetime-local" required className="w-full p-4 rounded-2xl bg-zinc-100 dark:bg-zinc-800 outline-none focus:ring-2 focus:ring-orange-500 transition-all text-sm" />
-                        </div>
-                        <div className="space-y-1">
-                            <label className="text-[10px] font-bold uppercase tracking-widest ml-1 block">End Time</label>
-                            <input name="endTime" type="datetime-local" required className="w-full p-4 rounded-2xl bg-zinc-100 dark:bg-zinc-800 outline-none focus:ring-2 focus:ring-orange-500 transition-all text-sm" />
-                        </div>
-                    </div>
-
                     <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-2xl border border-orange-100 dark:border-orange-900/30">
                         <div className="flex justify-between items-center">
                             <span className="text-sm font-bold">Total Amount:</span>
