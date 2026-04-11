@@ -1,82 +1,63 @@
-import MyBookingRow from "./MyBookingTable";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { bookingService } from "@/service/booking.service";
+import MyBookingTable from "./MyBookingTable";
+import { tutorsService } from "@/service/tutor.service";
 
-const bookings = [
-    {
-        id: "BK-9021",
-        tutorName: "Mahmud Reza",
-        subject: "Next.js Mastery",
-        date: "24 Oct, 2026",
-        time: "10:00 AM",
-        status: "Confirmed",
-        amount: "$120"
-    },
-    {
-        id: "BK-4432",
-        tutorName: "Sara Ahmed",
-        subject: "UI/UX Design",
-        date: "26 Oct, 2026",
-        time: "02:30 PM",
-        status: "Pending",
-        amount: "$80"
-    },
-    {
-        id: "BK-1102",
-        tutorName: "Rakibul Islam",
-        subject: "Prisma & SQL",
-        date: "28 Oct, 2026",
-        time: "11:00 AM",
-        status: "Cancelled",
-        amount: "$45"
-    }
-];
+export default async function TutorBookingsPage() {
+    const response = await tutorsService.getStudentBooking();
+    const bookings = Array.isArray(response?.data) ? response.data : [];
+    console.log(bookings);
+    ;
+    const totalEarnings = bookings
+        .filter((b: any) => b.status === "PAID" || b.status === "APPROVED")
+        .reduce((acc: number, curr: any) => acc + (curr.totalAmount || 0), 0);
 
-export default function BookingsPage() {
     return (
-        <main className="min-h-screen bg-[#fafafa] dark:bg-black p-4 md:p-8">
-            <div className="container mx-auto">
-                {/* Header Section */}
-                <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                    <div>
-                        <h1 className="text-3xl font-gray-900 font-bold tracking-tighter text-zinc-900 dark:text-white leading-none">
-                            My <span className="text-orange-500">Bookings</span>
-                        </h1>
-                        <p className="text-zinc-500 dark:text-zinc-400 mt-4 font-medium text-sm">
-                            Manage your upcoming learning sessions and track your history.
-                        </p>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <div className="h-2 w-2 rounded-full bg-orange-500 animate-pulse" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Live Schedule</span>
-                    </div>
+        <div className="bg-white dark:bg-[#161617] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+            {/* Header Section */}
+            <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">Student Bookings</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Manage your incoming tuition requests and schedule.</p>
                 </div>
 
-                {/* Table Wrapper */}
-                <div className="relative group overflow-hidden bg-white dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 ">
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="border-b border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50">
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Tutor / Subject</th>
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Schedule</th>
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Amount</th>
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Status</th>
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 text-right">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-900">
-                                {bookings.map((booking, index) => (
-                                    <MyBookingRow
-                                        key={booking.id}
-                                        booking={booking}
-                                        index={index}
-                                    />
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800">
+                    <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500">Total Requests</p>
+                    <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">{bookings.length}</p>
                 </div>
             </div>
-        </main>
+
+            {/* Table Section */}
+            <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                    <thead className="bg-gray-50 dark:bg-[#1c1c1d] text-[11px] uppercase text-gray-500 dark:text-gray-400 font-bold tracking-wider">
+                        <tr>
+                            <th className="px-6 py-4">Student Info</th>
+                            <th className="px-6 py-4">Booking Date</th>
+                            <th className="px-6 py-4">Amount</th>
+                            <th className="px-6 py-4">Status</th>
+                            <th className="px-6 py-4 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                        {bookings.map((booking: any) => (
+                            <MyBookingTable key={booking.id} booking={booking} />
+                        ))}
+                    </tbody>
+                </table>
+
+                {/* Empty State */}
+                {bookings.length === 0 && (
+                    <div className="text-center py-20">
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-50 dark:bg-orange-900/10 text-orange-500 mb-4">
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </div>
+                        <p className="text-gray-500 dark:text-gray-400 font-medium">No student requests found.</p>
+                    </div>
+                )}
+            </div>
+        </div>
     );
 }

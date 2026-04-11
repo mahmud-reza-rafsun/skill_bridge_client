@@ -13,7 +13,7 @@ import { Calendar } from "@/components/ui/calendar";
 
 export default function BookingModal({ tutor, isOpen, onClose }: BookingModalProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [date, setDate] = useState<Date>();
+    const [date, setDate] = useState<Date | undefined>();
 
     if (!isOpen) return null;
 
@@ -25,10 +25,17 @@ export default function BookingModal({ tutor, isOpen, onClose }: BookingModalPro
         }
 
         setIsSubmitting(true);
-
         try {
-            // Action এ date পাঠানো হচ্ছে
-            const res = await createBookingAction(tutor.id, Number(tutor.hourlyRate), date);
+            // টাইমজোন ফিক্স করার জন্য তারিখের সময় ১২টায় সেট করা হচ্ছে
+            const localDate = new Date(date);
+            localDate.setHours(12, 0, 0, 0);
+            const dateString = localDate.toISOString();
+
+            const res = await createBookingAction(
+                tutor.id,
+                Number(tutor.hourlyRate),
+                dateString
+            );
 
             if (res.success) {
                 toast.success(`Booking confirmed for ${format(date, "PPP")}!`);
@@ -47,7 +54,7 @@ export default function BookingModal({ tutor, isOpen, onClose }: BookingModalPro
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-[2px] p-4">
             <div className="bg-white dark:bg-zinc-950 w-full max-w-sm rounded-xl p-6 relative shadow-xl border border-zinc-200 dark:border-zinc-800">
 
-                <button onClick={onClose} className="absolute right-4 top-4 p-1.5 text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
+                <button onClick={onClose} type="button" className="absolute right-4 top-4 p-1.5 text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
                     <X className="w-4 h-4" />
                 </button>
 
@@ -60,23 +67,26 @@ export default function BookingModal({ tutor, isOpen, onClose }: BookingModalPro
                     <div className="space-y-1.5">
                         <Popover>
                             <PopoverTrigger>
-                                <Button
-                                    variant={"outline"}
+                                <div
                                     className={cn(
-                                        "w-full h-11 justify-start text-left font-normal rounded-lg border-zinc-200 dark:border-zinc-800",
+                                        "flex items-center w-full h-11 px-4 text-left font-normal rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 cursor-pointer hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-all",
                                         !date && "text-zinc-400"
                                     )}
                                 >
                                     <CalendarIcon className="mr-2 h-4 w-4 text-orange-500" />
-                                    {date ? format(date, "PPP") : <span className="text-sm">Pick a date</span>}
-                                </Button>
+                                    <span className="text-sm">
+                                        {date ? format(date, "PPP") : "Pick a date"}
+                                    </span>
+                                </div>
                             </PopoverTrigger>
+
                             <PopoverContent className="w-auto p-0 rounded-lg border-zinc-200 dark:border-zinc-800" align="start">
                                 <Calendar
                                     mode="single"
                                     selected={date}
-                                    onSelect={setDate}
-                                    disabled={(date) => date < new Date()}
+                                    onSelect={(d) => d && setDate(d)}
+                                    disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))}
+                                    fixedWeeks
                                 />
                             </PopoverContent>
                         </Popover>
@@ -90,9 +100,9 @@ export default function BookingModal({ tutor, isOpen, onClose }: BookingModalPro
                     <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full h-11 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-all font-medium text-sm"
+                        className="w-full h-11 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium text-sm"
                     >
-                        {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "Confirm Booking"}
+                        {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : "Confirm Booking"}
                     </Button>
                 </form>
             </div>

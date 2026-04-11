@@ -104,8 +104,8 @@ export const Navbar = ({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full border-2 border-orange-500/20 p-0 hover:bg-orange-500/10 transition-transform active:scale-95 focus-visible:ring-0">
-                    <Avatar className="h-9 w-9">
-                      <AvatarImage src={user.image} alt={user.name} />
+                    <Avatar className="">
+                      <AvatarImage className="object-cover" src={user.image} alt={user.name} />
                       <AvatarFallback className="bg-orange-500 text-white font-bold">
                         {user.name?.charAt(0).toUpperCase() || "U"}
                       </AvatarFallback>
@@ -116,7 +116,7 @@ export const Navbar = ({
                   <DropdownMenuLabel className="p-3">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-semibold text-foreground">{user.name}</p>
-                      <p className="text-xs text-black">{user.role}</p>
+                      <p className="text-xs text-gray-700 dark:text-gray-400">{user.role}</p>
                       <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                     </div>
                   </DropdownMenuLabel>

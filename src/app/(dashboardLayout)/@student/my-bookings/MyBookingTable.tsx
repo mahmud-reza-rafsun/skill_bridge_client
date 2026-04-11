@@ -4,8 +4,8 @@ import { format } from "date-fns";
 
 export default function MyBookingTable({ booking }: { booking: any }) {
     // Date formatting
-    const formattedDate = booking.createdAt
-        ? format(new Date(booking.createdAt), "MMM dd, yyyy")
+    const formattedDate = booking.date
+        ? format(new Date(booking.date), "MMM dd, yyyy")
         : "N/A";
 
     return (
@@ -41,12 +41,12 @@ export default function MyBookingTable({ booking }: { booking: any }) {
 
             {/* Status Badge */}
             <td className="px-6 py-4">
-                <div className={`inline-flex items-center px-2.5 py-1 rounded-full gap-1.5 
+                <div className={`inline-flex items-center px-3 py-2 rounded-full gap-1.5 
                     ${booking.status === "PAID"
                         ? 'text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400'
-                        : 'text-orange-600 bg-orange-100 dark:bg-orange-900/20 dark:text-orange-400'
+                        : 'text-yellow-600 bg-orange-100 dark:bg-orange-900/20 dark:text-yellow-500'
                     }`}>
-                    <span className={`h-1.5 w-1.5 rounded-full ${booking.status === "PAID" ? 'bg-green-500' : 'bg-orange-500'}`}></span>
+                    <span className={`h-1.5 w-1.5 rounded-full ${booking.status === "PAID" ? 'bg-green-500' : 'bg-yellow-500'}`}></span>
                     <span className='text-[10px] font-bold uppercase tracking-wider'>{booking.status}</span>
                 </div>
             </td>

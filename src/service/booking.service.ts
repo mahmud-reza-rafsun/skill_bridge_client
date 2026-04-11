@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 const BACKEND_URL = process.env.BACKEND_URL;
 
 export const bookingService = {
-    createBookings: async function (tutorId: string, totalAmount: number, date: Date) {
+    createBookings: async function (tutorId: string, totalAmount: number, date: string) {
         try {
             const cookieStore = await cookies();
             const url = `${BACKEND_URL}/api/bookings/${tutorId}`;
@@ -17,8 +17,8 @@ export const bookingService = {
                     "Cookie": cookieStore.toString(),
                 },
                 body: JSON.stringify({
-                    totalAmount: totalAmount,
-                    date: date, // এই তারিখটি ডাটাবেসে যাবে
+                    totalAmount,
+                    date,
                 }),
             });
 
@@ -27,7 +27,6 @@ export const bookingService = {
 
             return { success: true, data: result.data };
         } catch (error: any) {
-            console.error("❌ API Fetch Error:", error.message);
             return { success: false, error: error.message || "Network Error" };
         }
     },

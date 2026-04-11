@@ -1,71 +1,96 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { format } from "date-fns";
+import { Check, X, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Calendar, Clock, Tag, ExternalLink } from 'lucide-react';
-
-interface BookingProps {
-    booking: {
-        id: string;
-        tutorName: string;
-        subject: string;
-        date: string;
-        time: string;
-        status: string;
-        amount: string;
-    };
-    index: number;
+interface MyBookingTableProps {
+    booking: any;
+    onAction?: (id: string, action: 'APPROVE' | 'CANCEL' | 'DELETE') => void;
 }
 
-export default function MyBookingRow({ booking, index }: BookingProps) {
+export default function MyBookingTable({ booking, onAction }: MyBookingTableProps) {
+    const formattedDate = booking.date
+        ? format(new Date(booking.date), "MMM dd, yyyy")
+        : "N/A";
+
+    const handleAction = (type: 'APPROVE' | 'CANCEL' | 'DELETE') => {
+        if (onAction) {
+            onAction(booking.id, type);
+        } else {
+            toast.info(`${type} action clicked for: ${booking.student?.name}`);
+        }
+    };
+
     return (
-        <motion.tr
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="group hover:bg-zinc-50/80 dark:hover:bg-zinc-900/30 transition-colors border-b border-zinc-100 dark:border-zinc-900 last:border-0"
-        >
-            <td className="px-6 py-5">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 font-bold text-xs border border-orange-500/20">
-                        {booking.tutorName.charAt(0)}
-                    </div>
-                    <div>
-                        <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">{booking.tutorName}</p>
-                        <p className="text-[11px] text-zinc-500 flex items-center gap-1 mt-0.5">
-                            <Tag size={10} /> {booking.subject}
-                        </p>
-                    </div>
+        <tr className="hover:bg-orange-50/30 dark:hover:bg-orange-900/5 transition-colors border-b border-gray-100 dark:border-gray-800">
+            {/* Student Info */}
+            <td className="px-6 py-4">
+                <div className="flex flex-col">
+                    <span className="text-sm font-bold text-gray-800 dark:text-gray-200 block leading-tight">
+                        {booking.student?.name || "Unknown Student"}
+                    </span>
+                    <span className="text-[11px] text-gray-500 font-medium mt-0.5">
+                        {booking.student?.email}
+                    </span>
                 </div>
             </td>
-            <td className="px-6 py-5">
-                <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400 font-medium">
-                        <Calendar size={12} className="text-orange-500" /> {booking.date}
-                    </div>
-                    <div className="flex items-center gap-2 text-[11px] text-zinc-400">
-                        <Clock size={12} /> {booking.time}
-                    </div>
+
+            {/* Booking Date */}
+            <td className="px-6 py-4 text-xs text-gray-500 dark:text-gray-400">
+                <div className="flex flex-col">
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{formattedDate}</span>
+                    <span className="text-[10px] text-orange-500/70">Scheduled Time</span>
                 </div>
             </td>
-            <td className="px-6 py-5">
-                <span className="text-sm font-black text-zinc-900 dark:text-zinc-100">{booking.amount}</span>
+
+            {/* Amount */}
+            <td className="px-6 py-4 text-sm font-semibold text-gray-900 dark:text-white">
+                ${booking.totalAmount}
             </td>
-            <td className="px-6 py-5">
-                <span className={`
-                    px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest
-                    ${booking.status === 'Confirmed' ? 'bg-green-500/10 text-green-600 border border-green-500/20' : ''}
-                    ${booking.status === 'Pending' ? 'bg-orange-500/10 text-orange-600 border border-orange-500/20' : ''}
-                    ${booking.status === 'Cancelled' ? 'bg-red-500/10 text-red-600 border border-red-500/20' : ''}
-                `}>
-                    {booking.status}
-                </span>
+
+            {/* Status Badge */}
+            <td className="px-6 py-4">
+                <div className={`inline-flex items-center px-2.5 py-1 rounded-full gap-1.5 
+                    ${booking.status === "PAID" || booking.status === "APPROVED"
+                        ? 'text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400'
+                        : booking.status === "CANCELLED"
+                            ? 'text-red-600 bg-red-50 dark:bg-red-900/20 dark:text-red-400'
+                            : 'text-yellow-600 bg-orange-100 dark:bg-orange-900/20 dark:text-yellow-500'
+                    }`}>
+                    <span className={`h-1.5 w-1.5 rounded-full ${booking.status === "PAID" || booking.status === "APPROVED" ? 'bg-green-500' : booking.status === "CANCELLED" ? 'bg-red-500' : 'bg-yellow-500'}`}></span>
+                    <span className='text-xs font-semibold uppercase'>{booking.status}</span>
+                </div>
             </td>
-            <td className="px-6 py-5 text-right">
-                <button className="p-2 hover:bg-white dark:hover:bg-zinc-800 rounded-xl transition-all border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700 text-zinc-400 hover:text-orange-500">
-                    <ExternalLink size={16} />
-                </button>
+
+            {/* Actions - Fixed Alignment & Styles */}
+            <td className="px-6 py-4">
+                <div className="flex items-center justify-center gap-3">
+                    <button
+                        onClick={() => handleAction('APPROVE')}
+                        title="Approve"
+                        className="p-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 rounded-lg cursor-pointer transition-all group"
+                    >
+                        <Check className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    </button>
+
+                    <button
+                        onClick={() => handleAction('CANCEL')}
+                        title="Cancel"
+                        className="p-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 rounded-lg cursor-pointer transition-all group"
+                    >
+                        <X className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    </button>
+
+                    <button
+                        onClick={() => handleAction('DELETE')}
+                        title="Delete"
+                        className="p-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg cursor-pointer transition-all group"
+                    >
+                        <Trash2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    </button>
+                </div>
             </td>
-        </motion.tr>
+        </tr>
     );
 }
