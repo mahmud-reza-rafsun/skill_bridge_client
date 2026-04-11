@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import * as React from "react"
@@ -20,23 +21,20 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { StatsData } from "@/types/admin.stat"
 
-const statsData = {
-    totalUsers: 6,
-    totalStudents: 1,
-    totalTutors: 3,
-    totalBookings: 5,
-    totalReviews: 0,
-    totalRevenue: 15407
+// টাইপ ডিফিনিশন
+interface StatsData {
+    stats: {
+        totalUsers: number;
+        totalStudents: number;
+        totalTutors: number;
+        totalBookings: number;
+        totalReviews: number;
+        totalRevenue: number;
+    };
+    revenueDetails: Array<{ date: string; amount: number }>;
+    platformOverview: Array<{ label: string; value: number }>;
 }
-
-const chartData = [
-    { name: "Users", value: statsData.totalUsers },
-    { name: "Students", value: statsData.totalStudents },
-    { name: "Tutors", value: statsData.totalTutors },
-    { name: "Bookings", value: statsData.totalBookings },
-]
 
 function StatCard({
     title,
@@ -60,8 +58,7 @@ function StatCard({
     )
 }
 
-export default function AdminDashboard(props: StatsData) {
-    console.log(props)
+export default function AdminDashboard({ stats, revenueDetails, platformOverview }: StatsData) {
     const [mounted, setMounted] = React.useState(false)
 
     React.useEffect(() => {
@@ -72,31 +69,42 @@ export default function AdminDashboard(props: StatsData) {
 
     return (
         <div className="flex-1 space-y-6 p-6">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {/* উপরের স্ট্যাটাস কার্ডগুলো */}
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
                 <StatCard
                     title="Total Revenue"
-                    value={`$${statsData.totalRevenue}`}
+                    value={`$${stats?.totalRevenue}`}
                     subtitle="Lifetime earnings"
                 />
                 <StatCard
                     title="Total Users"
-                    value={statsData.totalUsers}
-                    subtitle={`${statsData.totalStudents} Students & ${statsData.totalTutors} Tutors`}
+                    value={stats?.totalUsers}
+                    subtitle="Total Users"
+                />
+                <StatCard
+                    title="Total Tutor"
+                    value={stats?.totalTutors}
+                    subtitle="Total Tutors"
+                />
+                <StatCard
+                    title="Total Tutor"
+                    value={stats?.totalStudents}
+                    subtitle="Total Students"
                 />
                 <StatCard
                     title="Bookings"
-                    value={statsData.totalBookings}
+                    value={stats?.totalBookings}
                     subtitle="Total lessons booked"
                 />
                 <StatCard
                     title="Reviews"
-                    value={statsData.totalReviews}
+                    value={stats?.totalReviews}
                     subtitle="Platform feedback"
                 />
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-                {/* Platform Overview - Orange Theme */}
+                {/* Platform Overview - বার চার্ট */}
                 <Card className="rounded-[2rem] border-zinc-200 shadow-sm dark:border-zinc-800">
                     <CardHeader>
                         <CardTitle className="text-lg font-bold">Platform Overview</CardTitle>
@@ -104,13 +112,13 @@ export default function AdminDashboard(props: StatsData) {
                     </CardHeader>
                     <CardContent className="h-72">
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={chartData}>
+                            <BarChart data={platformOverview}>
                                 <CartesianGrid
                                     strokeDasharray="3 3"
                                     vertical={false}
                                     className="stroke-orange-200 dark:stroke-orange-900/30"
                                 />
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} fontSize={12} />
+                                <XAxis dataKey="label" axisLine={false} tickLine={false} fontSize={12} />
                                 <YAxis axisLine={false} tickLine={false} fontSize={12} />
                                 <Tooltip
                                     cursor={{ fill: '#FF6900', opacity: 0.1 }}
@@ -127,7 +135,7 @@ export default function AdminDashboard(props: StatsData) {
                     </CardContent>
                 </Card>
 
-                {/* Revenue Analytics - Orange Area Chart */}
+                {/* Revenue Analytics - এরিয়া চার্ট */}
                 <Card className="rounded-[2rem] border-zinc-200 shadow-sm dark:border-zinc-800">
                     <CardHeader>
                         <CardTitle className="text-lg font-bold">Revenue Analytics</CardTitle>
@@ -135,15 +143,7 @@ export default function AdminDashboard(props: StatsData) {
                     </CardHeader>
                     <CardContent className="h-72">
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart
-                                data={[
-                                    { day: "Sun", val: 2000 },
-                                    { day: "Mon", val: 5000 },
-                                    { day: "Tue", val: 4000 },
-                                    { day: "Wed", val: 8000 },
-                                    { day: "Thu", val: statsData.totalRevenue },
-                                ]}
-                            >
+                            <AreaChart data={revenueDetails}>
                                 <defs>
                                     <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="#FF6900" stopOpacity={0.4} />
@@ -155,11 +155,12 @@ export default function AdminDashboard(props: StatsData) {
                                     vertical={false}
                                     className="stroke-orange-200 dark:stroke-orange-900/30"
                                 />
-                                <XAxis dataKey="day" axisLine={false} tickLine={false} fontSize={12} />
+                                <XAxis dataKey="date" axisLine={false} tickLine={false} fontSize={12} />
+                                <YAxis axisLine={false} tickLine={false} fontSize={12} />
                                 <Tooltip />
                                 <Area
                                     type="monotone"
-                                    dataKey="val"
+                                    dataKey="amount"
                                     stroke="#FF6900"
                                     fillOpacity={1}
                                     fill="url(#colorRev)"

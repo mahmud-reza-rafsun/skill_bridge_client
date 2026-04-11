@@ -146,7 +146,7 @@ export const Navbar = ({
               </DropdownMenu>
             ) : (
               <div className="flex items-center gap-3">
-                <Button asChild variant="secondary" className="rounded-lg font-semibold text-sm bg-orange-500/10 text-orange-600 dark:text-orange-400 hover:bg-orange-500/20 border-none transition-colors">
+                <Button asChild variant="secondary" className="rounded-lg font-semibold px-4 text-sm bg-orange-500/10 text-orange-600 dark:text-orange-400 hover:bg-orange-500/20 border-none transition-colors">
                   <Link href={auth.login.url}>{auth.login.title}</Link>
                 </Button>
                 <Button asChild className="rounded-lg font-semibold text-sm bg-orange-500 hover:bg-orange-600 text-white border-none shadow-md shadow-orange-500/20 transition-all transform hover:scale-105 active:scale-95">
