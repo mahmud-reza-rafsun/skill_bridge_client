@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { env } from "@/env";
 import { cookies } from "next/headers";
 
-const BACKEND_URL = process.env.BACKEND_URL;
+const BACKEND_URL = env.BACKEND_URL
 
-export const bookingService = {
-    createBookings: async function (tutorId: string, totalAmount: number, date: Date) {
+export const categoryService = {
+    createCategory: async function (name: string, slug: string) {
         try {
             const cookieStore = await cookies();
-            const url = `${BACKEND_URL}/api/bookings/${tutorId}`;
+            const url = `${BACKEND_URL}/api/category/create-category`;
 
             const res = await fetch(url, {
                 method: "POST",
@@ -17,25 +16,28 @@ export const bookingService = {
                     "Cookie": cookieStore.toString(),
                 },
                 body: JSON.stringify({
-                    totalAmount: totalAmount,
-                    date: date, // এই তারিখটি ডাটাবেসে যাবে
+                    name: name,
+                    slug: slug,
                 }),
             });
 
             const result = await res.json();
-            if (!res.ok) throw new Error(result.message || "Failed to create booking");
+
+            if (!res.ok) {
+                throw new Error(result.message || "Failed to create category");
+            }
 
             return { success: true, data: result.data };
         } catch (error: any) {
-            console.error("❌ API Fetch Error:", error.message);
+            console.error("❌ Category Service Error:", error.message);
             return { success: false, error: error.message || "Network Error" };
         }
     },
-    getMyBookings: async function () {
+    getAllCategory: async function () {
         try {
             const cookieStore = await cookies();
 
-            const res = await fetch(`${BACKEND_URL}/api/bookings/get-my-booking`, {
+            const res = await fetch(`${BACKEND_URL}/api/category/get-all-category`, {
                 method: "GET",
                 headers: {
                     "Cookie": cookieStore.toString(),

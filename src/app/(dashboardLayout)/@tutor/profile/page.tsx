@@ -21,34 +21,34 @@
 //         }));
 //     };
 
-//     // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-//     //     e.preventDefault();
-//     //     setLoading(true);
+//     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+//         e.preventDefault();
+//         setLoading(true);
 
-//     //     const formData = new FormData(e.currentTarget);
-//     //     const finalData = {
-//     //         categoryName: formData.get("categoryName") as string,
-//     //         bio: formData.get("bio") as string,
-//     //         hourlyRate: Number(formData.get("hourlyRate")),
-//     //         subject: (formData.get("subjects") as string)
-//     //             .split(",")
-//     //             .map(s => s.trim())
-//     //             .filter(s => s !== ""),
-//     //         availability: availability
-//     //     };
+//         const formData = new FormData(e.currentTarget);
+//         const finalData = {
+//             categoryName: formData.get("categoryName") as string,
+//             bio: formData.get("bio") as string,
+//             hourlyRate: Number(formData.get("hourlyRate")),
+//             subject: (formData.get("subjects") as string)
+//                 .split(",")
+//                 .map(s => s.trim())
+//                 .filter(s => s !== ""),
+//             availability: availability
+//         };
 
-//     //     try {
-//     //         const res = await becomeATutorSerive.becomeTutor(finalData);
-//     //         if (res) {
-//     //             toast.success("Success! Your tutor profile is ready.");
-//     //             router.push("/dashboard");
-//     //         }
-//     //     } catch (error: any) {
-//     //         toast.error(error.message || "Something went wrong");
-//     //     } finally {
-//     //         setLoading(false);
-//     //     }
-//     // };
+//         try {
+//             const res = await becomeATutorSerive.becomeTutor(finalData);
+//             if (res) {
+//                 toast.success("Success! Your tutor profile is ready.");
+//                 router.push("/dashboard");
+//             }
+//         } catch (error: any) {
+//             toast.error(error.message || "Something went wrong");
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
 
 //     return (
 //         <div className="max-w-2xl mx-auto p-3 bg-white dark:bg-zinc-950 rounded-xl border-zinc-200 border dark:border-zinc-800">

@@ -4,9 +4,10 @@
 import { bookingService } from "@/service/booking.service";
 import { revalidatePath } from "next/cache";
 
-export async function createBookingAction(tutorId: string, hourlyRate: number) {
+export async function createBookingAction(tutorId: string, totalAmount: number, date: Date) {
     try {
-        const res = await bookingService.createBookings(tutorId, hourlyRate);
+        // service এ date পাঠানো হচ্ছে
+        const res = await bookingService.createBookings(tutorId, totalAmount, date);
 
         if (res.success) {
             revalidatePath("/my-bookings");
