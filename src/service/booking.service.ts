@@ -30,28 +30,4 @@ export const bookingService = {
             return { success: false, error: error.message || "Network Error" };
         }
     },
-    getMyBookings: async function () {
-        try {
-            const cookieStore = await cookies();
-
-            const res = await fetch(`${BACKEND_URL}/api/bookings/get-my-booking`, {
-                method: "GET",
-                headers: {
-                    "Cookie": cookieStore.toString(),
-                },
-                cache: "no-store",
-            });
-
-            const result = await res.json();
-            if (!res.ok) {
-                console.error("Fetch failed:", result.message);
-                return { data: [], error: result.message || "Failed to fetch" };
-            }
-
-            return { data: result.data || [], error: null };
-        } catch (error) {
-            console.error("Connection Error:", error);
-            return { data: [], error: "Connection Error" };
-        }
-    },
 };

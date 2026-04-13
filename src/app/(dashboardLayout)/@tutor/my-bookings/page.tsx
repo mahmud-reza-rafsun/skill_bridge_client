@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { bookingService } from "@/service/booking.service";
 import MyBookingTable from "./MyBookingTable";
 import { tutorsService } from "@/service/tutor.service";
 
 export default async function TutorBookingsPage() {
-    const response = await tutorsService.getStudentBooking();
+    const response = await tutorsService.getMyStudentBookings();
     const bookings = Array.isArray(response?.data) ? response.data : [];
-    console.log(bookings);
-    ;
+
     const totalEarnings = bookings
-        .filter((b: any) => b.status === "PAID" || b.status === "APPROVED")
         .reduce((acc: number, curr: any) => acc + (curr.totalAmount || 0), 0);
 
     return (
@@ -20,10 +17,15 @@ export default async function TutorBookingsPage() {
                     <h2 className="text-xl font-bold text-gray-900 dark:text-white">Student Bookings</h2>
                     <p className="text-sm text-gray-500 dark:text-gray-400">Manage your incoming tuition requests and schedule.</p>
                 </div>
-
-                <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800">
-                    <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500">Total Requests</p>
-                    <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">{bookings.length}</p>
+                <div className="flex gap-x-5">
+                    <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800">
+                        <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500">Total Earnings</p>
+                        <p className="text-lg font-semibold text-green-500">${totalEarnings.toFixed(1)}</p>
+                    </div>
+                    <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800">
+                        <p className="text-[10px] uppercase tracking-wider font-bold text-gray-500">Total Requests</p>
+                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">{bookings.length}</p>
+                    </div>
                 </div>
             </div>
 

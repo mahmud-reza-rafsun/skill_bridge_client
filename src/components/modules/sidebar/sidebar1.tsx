@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   Users,
   CalendarCheck,
-  GraduationCap,
   ChartBarStacked,
   BookOpen,
 } from "lucide-react";
@@ -40,7 +39,6 @@ const sidebarConfig = {
     items: [
       { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
       { label: "My Bookings", icon: ClipboardList, href: "/my-bookings" },
-      { label: "My Students", icon: GraduationCap, href: "/my-students" },
       { label: "Profile", icon: UserPen, href: "/profile" },
     ],
   },

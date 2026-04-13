@@ -3,7 +3,7 @@ export const studentService = {
         const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
         try {
-            const res = await fetch(`${baseUrl}/api/tutors/my-students`, {
+            const res = await fetch(`${baseUrl}/api/bookings/get-tutor-bookings`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

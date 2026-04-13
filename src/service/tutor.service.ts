@@ -53,11 +53,35 @@ export const tutorsService = {
             return { data: [], error: "Something Went Wrong" };
         }
     },
-    getStudentBooking: async () => {
+    getMyStudentBookings: async () => {
         try {
             const cookieStore = await cookies();
 
-            const res = await fetch(`${BACKEND_URL}/api/bookings/get-my-booking`, {
+            const res = await fetch(`${BACKEND_URL}/api/tutors/get-student-bookings`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cookie": cookieStore.toString(),
+                },
+                next: { revalidate: 60 }
+            });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                return { data: [], error: result.message || "Unauthorized access!" };
+            }
+
+            return { data: result.data, error: null };
+        } catch (error) {
+            return { data: [], error: "Something Went Wrong" };
+        }
+    },
+    getTutorStats: async () => {
+        try {
+            const cookieStore = await cookies();
+
+            const res = await fetch(`${BACKEND_URL}/api/tutors/tutor-stats`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

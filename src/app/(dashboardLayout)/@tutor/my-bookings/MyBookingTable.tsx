@@ -52,13 +52,24 @@ export default function MyBookingTable({ booking, onAction }: MyBookingTableProp
             {/* Status Badge */}
             <td className="px-6 py-4">
                 <div className={`inline-flex items-center px-2.5 py-1 rounded-full gap-1.5 
-                    ${booking.status === "PAID" || booking.status === "APPROVED"
+        ${booking.status === "CONFIRMED" || booking.status === "PAID"
                         ? 'text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400'
                         : booking.status === "CANCELLED"
                             ? 'text-red-600 bg-red-50 dark:bg-red-900/20 dark:text-red-400'
-                            : 'text-yellow-600 bg-orange-100 dark:bg-orange-900/20 dark:text-yellow-500'
+                            : 'text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20 dark:text-yellow-500' // PENDING logic
                     }`}>
-                    <span className={`h-1.5 w-1.5 rounded-full ${booking.status === "PAID" || booking.status === "APPROVED" ? 'bg-green-500' : booking.status === "CANCELLED" ? 'bg-red-500' : 'bg-yellow-500'}`}></span>
+
+                    {/* Dot inside Badge */}
+                    <span className={`h-1.5 w-1.5 rounded-full 
+            ${booking.status === "CONFIRMED" || booking.status === "PAID"
+                            ? 'bg-green-500'
+                            : booking.status === "CANCELLED"
+                                ? 'bg-red-500'
+                                : 'bg-yellow-500'
+                        }`}>
+                    </span>
+
+                    {/* Status Text */}
                     <span className='text-xs font-semibold uppercase'>{booking.status}</span>
                 </div>
             </td>

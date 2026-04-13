@@ -3,7 +3,7 @@ import { bookingService } from "@/service/booking.service";
 import MyBookingTable from "./MyBookingTable";
 
 export default async function BookingHistoryPage() {
-    const response = await bookingService.getMyBookings();
+    const response = await bookingService.getUserBookings();
     console.log(response)
     const bookings = Array.isArray(response?.data) ? response.data : [];
     const totalSpent = bookings.reduce((acc: number, curr: any) => acc + (curr.totalAmount || 0), 0);
