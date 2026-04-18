@@ -3,7 +3,6 @@ import { tutorsService } from "@/service/tutor.service";
 
 export default async function TutorPage() {
     const { data: tutors, error } = await tutorsService.getAllTutors();
-
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-black p-6 md:p-12">
             <div className="max-w-7xl mx-auto">

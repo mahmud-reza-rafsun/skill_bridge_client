@@ -15,6 +15,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { userService } from "@/service/user.service";
 import { Roles } from "@/constants/role";
+import { ModeToggle } from "@/components/layout/ModeToggle";
 
 export default async function DashboardLayout({
     admin,
@@ -36,16 +37,26 @@ export default async function DashboardLayout({
             <SidebarInset>
                 {/* 2. Header */}
                 <header className="sticky top-0 z-10 bg-background flex h-16 items-center gap-2 px-4 border-b">
+                    {/* Left Side: Sidebar and Separator */}
                     <SidebarTrigger className="-ml-1" />
                     <Separator orientation="vertical" className="mr-2 h-4" />
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink href="/dashboard">Home</BreadcrumbLink>
-                            </BreadcrumbItem>
-                            <BreadcrumbSeparator />
-                        </BreadcrumbList>
-                    </Breadcrumb>
+
+                    {/* Middle/Left: Breadcrumb */}
+                    <div className="flex-1">
+                        <Breadcrumb>
+                            <BreadcrumbList>
+                                <BreadcrumbItem>
+                                    <span className="text-sm font-medium">Dashboard</span>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator />
+                            </BreadcrumbList>
+                        </Breadcrumb>
+                    </div>
+
+                    {/* Right Side: Mode Toggle */}
+                    <div className="mr-52">
+                        <ModeToggle />
+                    </div>
                 </header>
 
                 {/* 3. Main Content */}

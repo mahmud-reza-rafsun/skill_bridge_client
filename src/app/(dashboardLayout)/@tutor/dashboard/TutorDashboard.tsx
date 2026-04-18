@@ -21,7 +21,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
-// Stat Card Component
 function StatCard({ title, value, footer }: { title: string; value: string | number; footer: string }) {
     return (
         <Card className="rounded-2xl border-zinc-200 shadow-sm dark:border-zinc-800 bg-card">
@@ -53,14 +52,16 @@ interface DashboardProps {
 export default function TutorDashboard({ data }: DashboardProps) {
     const { stats, revenueChart } = data;
 
-    // চার্টের জন্য ডাটা ফরম্যাট করা (মাস অনুযায়ী গ্রুপ করা)
     const formattedChartData = React.useMemo(() => {
+        if (!revenueChart || !Array.isArray(revenueChart)) return [];
+
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-        const chartMap = revenueChart.reduce((acc: any, curr) => {
+        const chartMap = revenueChart.reduce((acc: Record<string, number>, curr) => {
+            if (!curr?.createdAt) return acc;
             const date = new Date(curr.createdAt);
             const monthName = months[date.getMonth()];
-            acc[monthName] = (acc[monthName] || 0) + curr.totalAmount;
+            acc[monthName] = (acc[monthName] || 0) + (curr.totalAmount || 0);
             return acc;
         }, {});
 
@@ -72,18 +73,15 @@ export default function TutorDashboard({ data }: DashboardProps) {
 
     return (
         <div className="flex-1 space-y-6 p-6 bg-background">
-            {/* Stats Section */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-                <StatCard title="Revenue" value={`$${stats.revenue}`} footer="+12.5% from last month" />
-                <StatCard title="Students" value={stats.students} footer="+2 new this week" />
-                <StatCard title="Bookings" value={stats.bookings} footer="Total lifetime sessions" />
-                <StatCard title="Next Booking" value={stats.nextBookingCount} footer="Upcoming sessions" />
-                <StatCard title="Rating" value={`${stats.averageRating} ⭐`} footer={`${stats.totalReviews} total reviews`} />
+                <StatCard title="Revenue" value={`$${stats?.revenue || 0}`} footer="+12.5% from last month" />
+                <StatCard title="Students" value={stats?.students || 0} footer="+2 new this week" />
+                <StatCard title="Bookings" value={stats?.bookings || 0} footer="Total lifetime sessions" />
+                <StatCard title="Next Booking" value={stats?.nextBookingCount || 0} footer="Upcoming sessions" />
+                <StatCard title="Rating" value={`${stats?.averageRating || 0}`} footer={`${stats?.totalReviews || 0} total reviews`} />
             </div>
 
-            {/* Charts Section */}
             <div className="grid gap-6 md:grid-cols-2">
-                {/* Revenue Trend Area Chart */}
                 <Card className="rounded-[2rem] border-zinc-200 shadow-sm dark:border-zinc-800">
                     <CardHeader>
                         <CardTitle className="text-lg font-bold">Revenue</CardTitle>
@@ -110,7 +108,6 @@ export default function TutorDashboard({ data }: DashboardProps) {
                     </CardContent>
                 </Card>
 
-                {/* Orders Bar Chart */}
                 <Card className="rounded-[2rem] border-zinc-200 shadow-sm dark:border-zinc-800">
                     <CardHeader>
                         <CardTitle className="text-lg font-bold">Orders</CardTitle>

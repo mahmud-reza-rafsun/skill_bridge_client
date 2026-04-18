@@ -1,28 +1,54 @@
-export const studentService = {
-    getIncomingBookings: async () => {
-        const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+import { env } from "@/env";
+import { cookies } from "next/headers";
 
+const BACKEND_URL = env.BACKEND_URL;
+
+export const studentService = {
+    getMyTutorBookings: async function () {
         try {
-            const res = await fetch(`${baseUrl}/api/bookings/get-tutor-bookings`, {
+            const cookieStore = await cookies();
+
+            const res = await fetch(`${BACKEND_URL}/api/bookings/get-tutor-bookings`, {
                 method: "GET",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Cookie": cookieStore.toString(),
                 },
-                credentials: "include",
+                cache: "no-store",
             });
 
-            const contentType = res.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                throw new Error("Invalid response from server (HTML instead of JSON)");
+            const result = await res.json();
+            if (!res.ok) {
+                return { data: [], error: result.message || "Failed to get my tutor bookings" };
             }
+            return { data: result.data || [], error: null };
+        } catch (error) {
+            console.error("Connection Error:", error);
+            return { data: [], error: "Connection Error" };
+        }
+    },
+    updateBookingStatus: async (bookingId: string, status: string) => {
+        try {
+            const cookieStore = await cookies();
+
+            const res = await fetch(`${process.env.BACKEND_URL}/api/bookings/complete-session/${bookingId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cookie": cookieStore.toString(),
+                },
+                body: JSON.stringify({ status }),
+                cache: "no-store"
+            });
 
             const result = await res.json();
-            if (!res.ok) throw new Error(result.message || "Failed to fetch data");
 
-            return result.data;
-        } catch (error: any) {
-            console.error("Client Fetch Error:", error.message);
-            throw error;
+            if (!res.ok) {
+                return { data: null, error: result.message || "Failed to update status!" };
+            }
+
+            return { data: result.data, error: null };
+        } catch (error) {
+            return { data: null, error: "Something Went Wrong" };
         }
     },
 };

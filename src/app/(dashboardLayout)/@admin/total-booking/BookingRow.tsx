@@ -4,7 +4,6 @@ import { Eye, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 
 export default function BookingRow({ order }: { order: any }) {
-    console.log(order);
     return (
         <tr className="hover:bg-gray-50 dark:hover:bg-[#1c1c1d] transition-colors border-b border-gray-100 dark:border-gray-800">
             {/* Student Info */}

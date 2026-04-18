@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { bookingService } from "@/service/booking.service";
+import { studentService } from "@/service/student.service";
 import MyBookingTable from "./MyBookingTable";
 
 export default async function BookingHistoryPage() {
-    const response = await bookingService.getUserBookings();
-    console.log(response)
+    const response = await studentService.getMyTutorBookings();
     const bookings = Array.isArray(response?.data) ? response.data : [];
     const totalSpent = bookings.reduce((acc: number, curr: any) => acc + (curr.totalAmount || 0), 0);
 
@@ -34,11 +33,13 @@ export default async function BookingHistoryPage() {
                 <table className="w-full text-left">
                     <thead className="bg-gray-50 dark:bg-[#1c1c1d] text-[11px] uppercase text-gray-500 dark:text-gray-400 font-bold tracking-wider">
                         <tr>
-                            <th className="px-6 py-4">Tutor & Subject</th>
-                            <th className="px-6 py-4">Booking ID</th>
+                            <th className="px-6 py-4">Tutor</th>
+                            <th className="px-6 py-4">Subject</th>
                             <th className="px-6 py-4">Amount</th>
-                            <th className="px-6 py-4">Booking Date</th>
+                            <th className="px-6 py-4">Booking Day</th>
+                            <th className="px-6 py-4">Booking Time</th>
                             <th className="px-6 py-4">Status</th>
+                            <th className="px-6 py-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-800">

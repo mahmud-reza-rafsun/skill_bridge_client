@@ -5,10 +5,15 @@ import { cookies } from "next/headers";
 const BACKEND_URL = process.env.BACKEND_URL;
 
 export const bookingService = {
-    createBookings: async function (tutorId: string, totalAmount: number, date: string) {
+    createBookings: async function (
+        tutorId: string,
+        totalAmount: number,
+        day: string,
+        slot: string
+    ) {
         try {
             const cookieStore = await cookies();
-            const url = `${BACKEND_URL}/api/bookings/${tutorId}`;
+            const url = `${BACKEND_URL}/api/bookings/create-bookings/${tutorId}`;
 
             const res = await fetch(url, {
                 method: "POST",
@@ -18,7 +23,8 @@ export const bookingService = {
                 },
                 body: JSON.stringify({
                     totalAmount,
-                    date,
+                    day,
+                    slot,
                 }),
             });
 

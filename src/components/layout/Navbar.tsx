@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Menu, X, LogOut, User, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./ModeToggle";
@@ -103,7 +103,7 @@ export const Navbar = ({
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full border-2 border-orange-500/20 p-0 hover:bg-orange-500/10 transition-transform active:scale-95 focus-visible:ring-0">
+                  <Button variant="ghost" className="relative cursor-pointer h-10 w-10 rounded-full border-2 border-orange-500/20 p-0 hover:bg-orange-500/10 transition-transform active:scale-95 focus-visible:ring-0">
                     <Avatar className="">
                       <AvatarImage className="object-cover" src={user.image} alt={user.name} />
                       <AvatarFallback className="bg-orange-500 text-white font-bold">

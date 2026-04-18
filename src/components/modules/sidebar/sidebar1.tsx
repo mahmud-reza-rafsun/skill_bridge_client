@@ -8,6 +8,8 @@ import {
   CalendarCheck,
   ChartBarStacked,
   BookOpen,
+  TimerReset,
+  Gift,
 } from "lucide-react";
 import {
   Sidebar,
@@ -39,6 +41,8 @@ const sidebarConfig = {
     items: [
       { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
       { label: "My Bookings", icon: ClipboardList, href: "/my-bookings" },
+      { label: "Availability", icon: TimerReset, href: "/availability" },
+      { label: "Students Reviews", icon: Gift, href: "/students-reviews" },
       { label: "Profile", icon: UserPen, href: "/profile" },
     ],
   },
