@@ -1,12 +1,16 @@
-// app/actions/BookingModalAction.ts
 "use server";
 
 import { bookingService } from "@/service/booking.service";
 import { revalidatePath } from "next/cache";
 
-export async function createBookingAction(tutorId: string, totalAmount: number, dateStr: string) {
+export async function createBookingAction(
+    tutorId: string,
+    totalAmount: number,
+    day: string,
+    slot: string
+) {
     try {
-        const res = await bookingService.createBookings(tutorId, totalAmount, dateStr);
+        const res = await bookingService.createBookings(tutorId, totalAmount, day, slot);
 
         if (res.success) {
             revalidatePath("/my-bookings");

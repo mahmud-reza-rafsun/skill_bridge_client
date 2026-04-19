@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Modal from "./modal";
-import Button from "../button/button";
+import { Button } from "@base-ui/react";
 
 const AnimationModalView: React.FC = () => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
@@ -50,8 +50,6 @@ const AnimationModalView: React.FC = () => {
             <Button
               onClick={() => openModal(animation.type)}
               className="w-full"
-              variant="default"
-              size="default"
             >
               {animation.name} Animation
             </Button>

@@ -18,7 +18,6 @@ export async function createBookingAction(
 
     if (result.success) {
         revalidatePath("/tutors");
-        revalidatePath(`/tutors/${tutorId}`);
     }
 
     return result;

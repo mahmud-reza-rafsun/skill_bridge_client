@@ -26,22 +26,12 @@ const EyeOffIcon = () => (
 );
 
 // --- Fixed Schema ---
-const registerSchema = z.object({
-    name: z.string().min(2, "Name is required"),
-    email: z.string().email("Invalid email"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    // Changed to always be a string to match Form state
-    image: z.string().url("Invalid image URL").or(z.literal("")),
-    phone: z.string().min(11, "Enter a valid phone number"),
-    role: z.enum(["STUDENT", "TUTOR"]),
-});
 
-type RegisterValues = z.infer<typeof registerSchema>;
 
 export default function RegisterForm() {
     const [showPassword, setShowPassword] = useState(false);
 
-    const form = useForm<RegisterValues>({
+    const form = useForm({
         defaultValues: {
             name: "",
             email: "",
@@ -50,7 +40,6 @@ export default function RegisterForm() {
             phone: "",
             role: "STUDENT",
         },
-        validators: { onSubmit: registerSchema },
         onSubmit: async ({ value }) => {
             const toastId = toast.loading("Creating account...");
             try {
