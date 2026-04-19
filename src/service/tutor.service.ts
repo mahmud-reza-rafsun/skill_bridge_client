@@ -29,6 +29,30 @@ export const tutorsService = {
             return { data: null, error: "Something Went Wrong" };
         }
     },
+    setTutorAvailability: async (finalData: any) => {
+        try {
+            const cookieStore = await cookies();
+
+            const res = await fetch(`${process.env.BACKEND_URL}/api/tutors/create-availability`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cookie": cookieStore.toString(),
+                },
+                body: JSON.stringify(finalData),
+            });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                return { data: null, error: result.message || "Unauthorized access!" };
+            }
+
+            return { data: result.data, error: null };
+        } catch (error) {
+            return { data: null, error: "Something Went Wrong" };
+        }
+    },
     getAllTutors: async () => {
         try {
             const cookieStore = await cookies();
