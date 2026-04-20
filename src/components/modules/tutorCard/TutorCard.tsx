@@ -52,11 +52,11 @@ export function TutorCard({ tutor }: { tutor: any }) {
             </CardContent>
 
             <CardFooter className="flex gap-2">
-                <Button onClick={() => setIsModalOpen(true)} className="flex-1 bg-orange-500 hover:bg-orange-600 text-white border-none">
+                <Button onClick={() => setIsModalOpen(true)} className="flex-1 bg-orange-500 hover:bg-orange-600 text-white border-none cursor-pointer">
                     Book Now
                 </Button>
                 <Link href={`/tutors/${tutor.id}`} className="flex-1">
-                    <Button variant="outline" className="w-full border-orange-500 text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20">
+                    <Button variant="outline" className="w-full border-orange-500 text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500 cursor-pointer">
                         Details
                     </Button>
                 </Link>

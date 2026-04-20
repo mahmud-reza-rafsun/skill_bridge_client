@@ -36,7 +36,7 @@ export default async function TutorBookingsPage() {
                             <th className="px-6 py-4">Student Info</th>
                             <th className="px-6 py-4">Subject</th>
                             <th className="px-6 py-4">Day</th>
-                            <th className="px-6 py-4">Slot</th>
+                            <th className="px-6 py-4">Time</th>
                             <th className="px-6 py-4">Amount</th>
                             <th className="px-6 py-4">Status</th>
                             <th className="px-6 py-4 text-center">Actions</th>

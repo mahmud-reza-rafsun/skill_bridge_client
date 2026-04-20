@@ -15,7 +15,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { userService } from "@/service/user.service";
 import { Roles } from "@/constants/role";
-import { ModeToggle } from "@/components/layout/ModeToggle";
+import { ModeToggle } from "@/utils/ModeToggle";
+import { GlobalUser } from "@/utils/GlobalUser";
 
 export default async function DashboardLayout({
     admin,
@@ -28,6 +29,7 @@ export default async function DashboardLayout({
 }) {
 
     const session = await userService.getSession();
+    const user = session?.data?.user || null;
     const userRole = session?.data?.user ? session.data.user.role : null;
 
 
@@ -54,8 +56,9 @@ export default async function DashboardLayout({
                     </div>
 
                     {/* Right Side: Mode Toggle */}
-                    <div className="mr-52">
+                    <div className="mr-52 flex items-center gap-3">
                         <ModeToggle />
+                        <GlobalUser user={user} />
                     </div>
                 </header>
 

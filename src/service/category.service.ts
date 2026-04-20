@@ -47,7 +47,6 @@ export const categoryService = {
 
             const result = await res.json();
             if (!res.ok) {
-                console.error("Fetch failed:", result.message);
                 return { data: [], error: result.message || "Failed to fetch" };
             }
 

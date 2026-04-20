@@ -53,11 +53,11 @@ export const tutorsService = {
             return { data: null, error: "Something Went Wrong" };
         }
     },
-    getAllTutors: async () => {
+    getAllTutors: async (searchTerm: string, category: string) => {
         try {
             const cookieStore = await cookies();
 
-            const res = await fetch(`${BACKEND_URL}/api/tutors/get-all-tutors`, {
+            const res = await fetch(`${BACKEND_URL}/api/tutors/get-all-tutors?searchTerm=${searchTerm}&category=${category}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

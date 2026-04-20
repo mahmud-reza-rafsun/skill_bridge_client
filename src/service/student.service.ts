@@ -51,4 +51,26 @@ export const studentService = {
             return { data: null, error: "Something Went Wrong" };
         }
     },
+    getStudentDashboard: async function () {
+        try {
+            const cookieStore = await cookies();
+
+            const res = await fetch(`${BACKEND_URL}/api/bookings/dashboard-stats`, {
+                method: "GET",
+                headers: {
+                    "Cookie": cookieStore.toString(),
+                },
+                cache: "no-store",
+            });
+
+            const result = await res.json();
+            if (!res.ok) {
+                return { data: [], error: result.message || "Failed to get my tutor bookings" };
+            }
+            return { data: result.data || [], error: null };
+        } catch (error) {
+            console.error("Connection Error:", error);
+            return { data: [], error: "Connection Error" };
+        }
+    },
 };

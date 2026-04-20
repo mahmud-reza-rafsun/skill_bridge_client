@@ -22,7 +22,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
-// টাইপ ডিফিনিশন
 interface StatsData {
     stats: {
         totalUsers: number;
@@ -69,7 +68,6 @@ export default function AdminDashboard({ stats, revenueDetails, platformOverview
 
     return (
         <div className="flex-1 space-y-6 p-6">
-            {/* উপরের স্ট্যাটাস কার্ডগুলো */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
                 <StatCard
                     title="Total Revenue"
@@ -77,17 +75,17 @@ export default function AdminDashboard({ stats, revenueDetails, platformOverview
                     subtitle="Lifetime earnings"
                 />
                 <StatCard
-                    title="Total Users"
+                    title="Users"
                     value={stats?.totalUsers}
                     subtitle="Total Users"
                 />
                 <StatCard
-                    title="Total Tutor"
+                    title="Tutor"
                     value={stats?.totalTutors}
                     subtitle="Total Tutors"
                 />
                 <StatCard
-                    title="Total Tutor"
+                    title="Students"
                     value={stats?.totalStudents}
                     subtitle="Total Students"
                 />
@@ -104,7 +102,6 @@ export default function AdminDashboard({ stats, revenueDetails, platformOverview
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-                {/* Platform Overview - বার চার্ট */}
                 <Card className="rounded-[2rem] border-zinc-200 shadow-sm dark:border-zinc-800">
                     <CardHeader>
                         <CardTitle className="text-lg font-bold">Platform Overview</CardTitle>
@@ -135,7 +132,6 @@ export default function AdminDashboard({ stats, revenueDetails, platformOverview
                     </CardContent>
                 </Card>
 
-                {/* Revenue Analytics - এরিয়া চার্ট */}
                 <Card className="rounded-[2rem] border-zinc-200 shadow-sm dark:border-zinc-800">
                     <CardHeader>
                         <CardTitle className="text-lg font-bold">Revenue Analytics</CardTitle>
