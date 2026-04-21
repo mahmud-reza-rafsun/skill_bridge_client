@@ -6,16 +6,29 @@ import React, { useState } from "react";
 import { Star } from "lucide-react";
 import { ReviewModalProps } from "@/types/booking.types";
 import { toast } from "sonner";
+import { postReviewAction } from "./ReviewAction";
 
 const TutorReviewModal: React.FC<ReviewModalProps> = ({ isOpen, onClose, bookingId }) => {
     const [rating, setRating] = useState<number>(0);
     const [hover, setHover] = useState<number>(0);
     const [comment, setComment] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        toast.success(`Thank you! You have given ${rating} star review.`);
-        onClose();
+
+        try {
+            const reviewData = {
+                comment: comment,
+                rating: rating,
+            };
+            await postReviewAction(reviewData, bookingId);
+
+            toast.success(`Thank you ${comment}! You have given ${rating} star review.`);
+
+            onClose();
+        } catch (error) {
+            toast.error("There was an error posting your review. Please try again.");
+        }
     };
 
     return (

@@ -142,24 +142,59 @@ export default function StudentDashboard({ data }: DashboardProps) {
                     <CardContent>
                         <div className="space-y-4">
                             {recentBookings && recentBookings.length > 0 ? (
-                                recentBookings.map((booking: any) => (
-                                    <div key={booking.id} className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold">
-                                                {booking.tutor?.user?.name?.charAt(0) || "T"}
+                                recentBookings.map((booking: any) => {
+                                    return (
+                                        <div key={booking.id} className="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 shadow-sm">
+                                            <div className="flex items-center gap-3">
+                                                {/* Avatar */}
+                                                {booking.tutorImage ? (
+                                                    <img
+                                                        src={booking.tutorImage}
+                                                        alt={booking.tutorName}
+                                                        className="w-10 h-10 rounded-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold">
+                                                        {booking.tutorName?.charAt(0) || "T"}
+                                                    </div>
+                                                )}
+
+                                                <div>
+                                                    <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{booking.tutorName}</p>
+                                                    <p className="text-xs text-zinc-500">{new Date(booking.bookingDate).toLocaleDateString()}</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p className="text-sm font-semibold">{booking.tutor?.user?.name}</p>
-                                                <p className="text-xs text-zinc-500">{new Date(booking.createdAt).toLocaleDateString()}</p>
+
+                                            {/* Status Badge with Dot */}
+                                            <div className={`inline-flex items-center px-2.5 py-1 rounded-full gap-1.5 
+                                                ${booking.status === "CONFIRMED"
+                                                    ? 'text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400'
+                                                    : booking.status === "COMPLETED"
+                                                        ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20 dark:text-blue-400'
+                                                        : booking.status === "CANCELLED"
+                                                            ? 'text-red-600 bg-red-50 dark:bg-red-900/20 dark:text-red-400'
+                                                            : 'text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20 dark:text-yellow-500'
+                                                }`}>
+
+                                                {/* Status Dot */}
+                                                <span className={`h-1.5 w-1.5 rounded-full 
+                                                        ${booking.status === "CONFIRMED"
+                                                        ? 'bg-green-500'
+                                                        : booking.status === "COMPLETED"
+                                                            ? 'bg-blue-500'
+                                                            : booking.status === "CANCELLED"
+                                                                ? 'bg-red-500'
+                                                                : 'bg-yellow-500'
+                                                    }`}
+                                                />
+
+                                                <span className='text-xs font-semibold uppercase tracking-wider'>
+                                                    {booking.status}
+                                                </span>
                                             </div>
                                         </div>
-                                        <span className={`text-[10px] px-2 py-1 rounded-full font-bold uppercase ${booking.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-700' :
-                                            booking.status === 'PENDING' ? 'bg-amber-100 text-amber-700' : 'bg-zinc-100 text-zinc-700'
-                                            }`}>
-                                            {booking.status}
-                                        </span>
-                                    </div>
-                                ))
+                                    );
+                                })
                             ) : (
                                 <div className="text-center py-10">
                                     <p className="text-zinc-500 text-sm italic">No recent bookings found.</p>

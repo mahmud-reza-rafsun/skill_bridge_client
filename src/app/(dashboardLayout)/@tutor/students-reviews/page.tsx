@@ -4,7 +4,7 @@ import ReviewTableRow from "./ReviewTableRow";
 export default async function TutorReviewPage() {
     const response = await tutorsService.getStudentReviews();
     const bookings = Array.isArray(response?.data) ? response.data : [];
-
+    console.log(bookings)
     return (
         <div className="bg-white dark:bg-[#161617] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
             {/* Header Section */}
