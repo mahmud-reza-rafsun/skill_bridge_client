@@ -53,28 +53,34 @@ export const tutorsService = {
             return { data: null, error: "Something Went Wrong" };
         }
     },
-    getAllTutors: async (searchTerm: string, category: string) => {
+    getAllTutors: async (searchTerm: string = "", category: string = "", page: number = 1, limit: number = 6) => {
         try {
             const cookieStore = await cookies();
-
-            const res = await fetch(`${BACKEND_URL}/api/tutors/get-all-tutors?searchTerm=${searchTerm}&category=${category}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Cookie": cookieStore.toString(),
-                },
-                next: { revalidate: 60 }
-            });
+            const res = await fetch(
+                `${BACKEND_URL}/api/tutors/get-all-tutors?searchTerm=${searchTerm}&category=${category}&page=${page}&limit=${limit}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Cookie": cookieStore.toString(),
+                    },
+                    next: { revalidate: 60 }
+                }
+            );
 
             const result = await res.json();
 
             if (!res.ok) {
-                return { data: [], error: result.message || "Unauthorized access!" };
+                return { data: [], meta: null, error: result.message || "Unauthorized access!" };
             }
 
-            return { data: result.data, error: null };
+            return {
+                data: result.data,
+                meta: result.meta,
+                error: null
+            };
         } catch (error) {
-            return { data: [], error: "Something Went Wrong" };
+            return { data: [], meta: null, error: "Something Went Wrong" };
         }
     },
     getMyStudentBookings: async () => {

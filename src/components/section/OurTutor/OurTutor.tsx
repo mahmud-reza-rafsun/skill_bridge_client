@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Briefcase, ChevronLeft, ChevronRight } from "lucide-react";
+import { Mail, Briefcase, ChevronLeft, ChevronRight, NotebookTabs } from "lucide-react";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton"; // আপনার প্রজেক্টের পাথ অনুযায়ী ইম্পোর্ট
 
 // --- Types ---
 interface Tutor {
@@ -12,6 +13,12 @@ interface Tutor {
     role: string;
     email: string;
     profile: string;
+    subject: string;
+    user: {
+        name: string;
+        email: string;
+        image: string;
+    }
 }
 
 const useIsMobile = (breakpoint: number = 768): boolean => {
@@ -29,25 +36,34 @@ export default function OutTutor() {
     const [tutors, setTutors] = useState<Tutor[]>([]);
     const [activeIndex, setActiveIndex] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const isMobile = useIsMobile();
 
     useEffect(() => {
         const fetchTutors = async () => {
             try {
-                const dummyData: Tutor[] = [
-                    { id: 1, name: "Dr. Anisul Islam", role: "Full Stack Lead", email: "anisul@skillbridge.com", profile: "https://api.dicebear.com/7.x/avataaars/svg?seed=1" },
-                    { id: 2, name: "Sumit Saha", role: "MERN Expert", email: "sumit@skillbridge.com", profile: "https://api.dicebear.com/7.x/avataaars/svg?seed=2" },
-                    { id: 3, name: "Jhankar Mahbub", role: "Frontend Guru", email: "jhankar@skillbridge.com", profile: "https://api.dicebear.com/7.x/avataaars/svg?seed=3" },
-                    { id: 4, name: "Hitesh Choudhary", role: "Backend Specialist", email: "hitesh@skillbridge.com", profile: "https://api.dicebear.com/7.x/avataaars/svg?seed=4" },
-                    { id: 5, name: "Piyush Garg", role: "DevOps Engineer", email: "piyush@skillbridge.com", profile: "https://api.dicebear.com/7.x/avataaars/svg?seed=5" },
-                    { id: 6, name: "Love Babbar", role: "DSA Mentor", email: "love@skillbridge.com", profile: "https://api.dicebear.com/7.x/avataaars/svg?seed=6" },
-                ];
-                setTutors(dummyData);
+                setLoading(true);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/tutors/get-all-tutors`);
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch tutors");
+                }
+
+                const result = await response.json();
+
+                if (result.success && Array.isArray(result.data)) {
+                    const limitedTutors = result.data.slice(0, 6);
+                    setTutors(limitedTutors);
+                } else {
+                    setTutors([]);
+                }
+            } catch (err: any) {
+                setError(err?.message || "Something went wrong");
+            } finally {
                 setLoading(false);
-            } catch (error) {
-                console.error("Failed to fetch tutors", error);
             }
         };
+
         fetchTutors();
     }, []);
 
@@ -56,20 +72,75 @@ export default function OutTutor() {
     const containerSize = containerRadius * 2 + 160;
 
     const getRotation = useCallback(
-        (index: number): number => (index - activeIndex) * (360 / tutors.length),
+        (index: number): number => {
+            if (tutors.length === 0) return 0;
+            return (index - activeIndex) * (360 / tutors.length);
+        },
         [activeIndex, tutors.length]
     );
 
-    const next = () => setActiveIndex((i) => (i + 1) % tutors.length);
-    const prev = () => setActiveIndex((i) => (i - 1 + tutors.length) % tutors.length);
+    const next = () => setActiveIndex((i) => (tutors.length > 0 ? (i + 1) % tutors.length : 0));
+    const prev = () => setActiveIndex((i) => (tutors.length > 0 ? (i - 1 + tutors.length) % tutors.length : 0));
 
-    if (loading) return <div className="h-[400px] flex items-center justify-center text-orange-500">Loading Tutors...</div>;
+    // Skeleton Loading UI
+    if (loading) {
+        return (
+            <section className="flex flex-col items-center py-32 relative min-h-[700px] bg-background">
+                <div className="text-center mb-16 space-y-4">
+                    <Skeleton className="h-10 w-48 mx-auto" />
+                    <Skeleton className="h-4 w-72 mx-auto" />
+                </div>
+                <div className="relative flex items-center justify-center" style={{ width: containerSize, height: containerSize }}>
+                    {/* Circle Border Skeleton */}
+                    <div className="absolute rounded-full border border-muted opacity-20" style={{ width: containerRadius * 2, height: containerRadius * 2 }} />
+
+                    {/* Center Card Skeleton */}
+                    <div className="z-20 bg-card border border-border rounded-[2rem] p-6 w-64 md:w-72 text-center shadow-sm">
+                        <Skeleton className="w-24 h-24 rounded-full mx-auto -mt-20 border-8 border-background" />
+                        <div className="mt-4 space-y-3">
+                            <Skeleton className="h-6 w-3/4 mx-auto" />
+                            <Skeleton className="h-4 w-1/2 mx-auto" />
+                            <Skeleton className="h-4 w-2/3 mx-auto" />
+                        </div>
+                        <div className="flex justify-center mt-6 space-x-3">
+                            <Skeleton className="h-10 w-10 rounded-full" />
+                            <Skeleton className="h-10 w-32 rounded-full" />
+                            <Skeleton className="h-10 w-10 rounded-full" />
+                        </div>
+                    </div>
+
+                    {/* Orbiting Skeletons */}
+                    {[1, 2, 3, 4, 5, 6].map((_, i) => (
+                        <div
+                            key={i}
+                            className="absolute"
+                            style={{
+                                width: profileSize,
+                                height: profileSize,
+                                transform: `rotate(${(i * 60)}deg) translateY(-${containerRadius}px)`,
+                                top: `calc(50% - ${profileSize / 2}px)`,
+                                left: `calc(50% - ${profileSize / 2}px)`,
+                            }}
+                        >
+                            <Skeleton className="w-full h-full rounded-full" />
+                        </div>
+                    ))}
+                </div>
+            </section>
+        );
+    }
+
+    if (error || tutors.length === 0) {
+        return (
+            <div className="h-[700px] flex items-center justify-center text-muted-foreground">
+                <p>{error || "No tutors found."}</p>
+            </div>
+        );
+    }
 
     return (
         <section className="flex flex-col items-center py-32 relative min-h-[700px] bg-background overflow-hidden">
-
-            {/* Header */}
-            <div className="text-center mb-16">
+            <div className="text-center mb-16 px-4">
                 <h2 className="text-4xl md:text-5xl font-bold mb-4">Our <span className="text-orange-500">Mentors</span></h2>
                 <p className="text-muted-foreground text-base max-w-lg mx-auto">
                     Learn from industry experts and take your career to the next level with personalized guidance.
@@ -80,7 +151,6 @@ export default function OutTutor() {
                 className="relative flex items-center justify-center"
                 style={{ width: containerSize, height: containerSize }}
             >
-
                 <div
                     className="absolute rounded-full border border-orange-500/10 dark:border-orange-500 shadow-[0_0_50px_rgba(249,115,22,0.03)]"
                     style={{
@@ -92,10 +162,9 @@ export default function OutTutor() {
                     }}
                 />
 
-                {/* Center Card */}
                 <AnimatePresence mode="wait">
                     <motion.div
-                        key={tutors[activeIndex].id}
+                        key={tutors[activeIndex]?.id}
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
@@ -103,38 +172,40 @@ export default function OutTutor() {
                         className="z-20 bg-card border border-orange-500/10 dark:border-orange-500 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(249,115,22,0.05)] rounded-[2rem] p-6 w-64 md:w-72 text-center"
                     >
                         <motion.img
-                            src={tutors[activeIndex].profile}
-                            alt={tutors[activeIndex].name}
+                            src={tutors[activeIndex]?.user.image}
+                            alt={tutors[activeIndex]?.user.name}
                             className="w-24 h-24 rounded-full mx-auto -mt-20 border-8 border-background object-cover bg-orange-100 p-1 shadow-lg"
                         />
                         <div className="mt-4">
-                            <h3 className="text-xl font-bold text-foreground truncate">{tutors[activeIndex].name}</h3>
+                            <h3 className="text-xl font-bold text-foreground truncate">{tutors[activeIndex]?.user.name}</h3>
                             <div className="flex items-center justify-center text-sm text-orange-500 font-semibold mt-1">
-                                <Briefcase size={14} className="mr-1.5" /> {tutors[activeIndex].role}
+                                <Briefcase size={14} className="mr-1.5" /> {tutors[activeIndex]?.role}
                             </div>
                             <div className="flex items-center justify-center text-xs text-muted-foreground mt-2">
-                                <Mail size={12} className="mr-1.5" /> {tutors[activeIndex].email}
+                                <NotebookTabs size={12} className="mr-1.5" /> {tutors[activeIndex]?.subject}
+                            </div>
+                            <div className="flex items-center justify-center text-xs text-muted-foreground mt-2">
+                                <Mail size={12} className="mr-1.5" /> {tutors[activeIndex]?.user.email}
                             </div>
                         </div>
 
                         <div className="flex justify-center items-center mt-6 space-x-3">
-                            <button onClick={prev} className="p-2.5 rounded-full bg-orange-500/5 hover:bg-orange-500/20 text-orange-500 transition-all active:scale-90">
+                            <button onClick={prev} className="p-2.5 cursor-pointer rounded-full bg-orange-500/5 hover:bg-orange-500/20 text-orange-500 transition-all active:scale-90">
                                 <ChevronLeft size={18} />
                             </button>
-                            <Link href={`/tutors/${tutors[activeIndex].id}`}>
-                                <button className="px-6 py-2 text-sm font-bold rounded-full bg-orange-500 text-white hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20 active:scale-95">
+                            <Link href={`/tutors/${tutors[activeIndex]?.id}`}>
+                                <button className="px-6 py-2 cursor-pointer text-sm font-bold rounded-full bg-orange-500 text-white hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20 active:scale-95">
                                     View Profile
                                 </button>
                             </Link>
-                            <button onClick={next} className="p-2.5 rounded-full bg-orange-500/5 hover:bg-orange-500/20 text-orange-500 transition-all active:scale-90">
+                            <button onClick={next} className="p-2.5 cursor-pointer rounded-full bg-orange-500/5 hover:bg-orange-500/20 text-orange-500 transition-all active:scale-90">
                                 <ChevronRight size={18} />
                             </button>
                         </div>
                     </motion.div>
                 </AnimatePresence>
 
-                {/* Orbiting Profiles */}
-                {tutors.map((t, i) => {
+                {tutors?.map((t, i) => {
                     const rotation = getRotation(i);
                     return (
                         <motion.div
@@ -158,7 +229,7 @@ export default function OutTutor() {
                                 onClick={() => setActiveIndex(i)}
                             >
                                 <img
-                                    src={t.profile}
+                                    src={t?.user?.image}
                                     alt={t.name}
                                     className={`w-full h-full object-cover rounded-full cursor-pointer transition-all duration-500 border-2 ${i === activeIndex
                                         ? "border-orange-500 scale-125 shadow-xl shadow-orange-500/30 ring-4 ring-orange-500/10"

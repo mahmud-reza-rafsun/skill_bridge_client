@@ -2,28 +2,34 @@ import { TutorCard } from "@/components/modules/tutorCard/TutorCard";
 import { tutorsService } from "@/service/tutor.service";
 import TutorFilterHeader from "./TutorFilterHeader";
 import { categoryService } from "@/service/category.service";
+import { Pagination } from "./Pagination";
 
 export default async function TutorPage({
     searchParams,
 }: {
-    searchParams: Promise<{ searchTerm?: string; category?: string }>;
+    searchParams: Promise<{ searchTerm?: string; category?: string; page?: string }>;
 }) {
     const params = await searchParams;
     const searchTerm = params.searchTerm || "";
     const category = params.category || "";
+    const page = Number(params.page) || 1; // URL থেকে পেজ নম্বর নেওয়া
+    const limit = 6; // প্রতি পেজে কয়টি ডাটা দেখাবেন
 
-    // 1. Fetch tutors with filters
-    const { data: tutors, error } = await tutorsService.getAllTutors(searchTerm, category);
+    // 1. Fetch tutors with filters and pagination
+    const { data: tutors, meta, error } = await tutorsService.getAllTutors(
+        searchTerm,
+        category,
+        page,
+        limit
+    );
 
-    // 2. Fetch categories from API
+    // 2. Fetch categories
     const { data: categoryData } = await categoryService.getAllCategory();
-
     const categories: string[] = categoryData?.map((item: any) => item.name) || [];
 
     return (
         <div className="min-h-screen bg-zinc-50 dark:bg-black p-6 md:p-12">
             <div className="max-w-7xl mx-auto">
-
                 <TutorFilterHeader categories={categories} />
 
                 {error && (
@@ -44,6 +50,14 @@ export default async function TutorPage({
                             </p>
                         </div>
                     )}
+                </div>
+
+                {/* Pagination UI */}
+                <div className="mt-12">
+                    <Pagination
+                        currentPage={page}
+                        totalPage={meta?.totalPage || 1}
+                    />
                 </div>
             </div>
         </div>
