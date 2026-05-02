@@ -11,16 +11,10 @@ interface PaginationProps {
 export const Pagination = ({ currentPage, totalPage }: PaginationProps) => {
     const router = useRouter();
     const searchParams = useSearchParams();
-
-    // পেজ পরিবর্তন করার ফাংশন
     const handlePageChange = (newPage: number) => {
         if (newPage < 1 || newPage > totalPage) return;
-
-        // বর্তমান URL-এর সব প্যারামিটার ঠিক রেখে শুধু 'page' আপডেট করা
         const params = new URLSearchParams(searchParams.toString());
         params.set("page", newPage.toString());
-
-        // নতুন URL-এ পুশ করা
         router.push(`?${params.toString()}`, { scroll: false });
     };
 
@@ -45,8 +39,8 @@ export const Pagination = ({ currentPage, totalPage }: PaginationProps) => {
                     key={page}
                     onClick={() => handlePageChange(page)}
                     className={`w-10 h-10 rounded-lg border transition-all cursor-pointer font-medium ${currentPage === page
-                            ? "bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/20"
-                            : "border-orange-500/20 hover:border-orange-500 text-muted-foreground hover:text-orange-500"
+                        ? "bg-orange-500 border-orange-500 text-white shadow-lg shadow-orange-500/20"
+                        : "border-orange-500/20 hover:border-orange-500 text-muted-foreground hover:text-orange-500"
                         }`}
                 >
                     {page}

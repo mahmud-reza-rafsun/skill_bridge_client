@@ -5,7 +5,9 @@ import MyBookingTable from "./MyBookingTable";
 export default async function BookingHistoryPage() {
     const response = await studentService.getMyTutorBookings();
     const bookings = Array.isArray(response?.data) ? response.data : [];
-    const totalSpent = bookings.reduce((acc: number, curr: any) => acc + (curr.totalAmount || 0), 0);
+    const totalSpent = bookings
+        .filter((b: any) => b.status === "COMPLETED")
+        .reduce((acc: number, curr: any) => acc + (curr.totalAmount || 0), 0);
 
     return (
         <div className="bg-white dark:bg-[#161617] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">

@@ -33,6 +33,7 @@ export const Navbar = ({
   menu = [
     { title: "Home", url: "/" },
     { title: "Tutors", url: "/tutors" },
+    { title: "Profile", url: "/my-profile" },
     { title: "Dashboard", url: "/dashboard" },
   ],
   auth = {

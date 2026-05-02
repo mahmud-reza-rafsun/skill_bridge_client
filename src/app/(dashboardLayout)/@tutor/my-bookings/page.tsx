@@ -6,6 +6,7 @@ export default async function TutorBookingsPage() {
     const response = await tutorsService.getMyStudentBookings();
     const bookings = Array.isArray(response?.data) ? response.data : [];
     const totalEarnings = bookings
+        .filter((b: any) => b.status === "COMPLETED")
         .reduce((acc: number, curr: any) => acc + (curr.totalAmount || 0), 0);
 
     return (

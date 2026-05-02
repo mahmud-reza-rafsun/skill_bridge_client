@@ -13,6 +13,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { uploadToImgBB } from "@/utils/uploadToImgBB";
 
 // --- Icons ---
 const UserPlusIcon = () => (
@@ -30,6 +31,8 @@ const EyeOffIcon = () => (
 
 export default function RegisterForm() {
     const [showPassword, setShowPassword] = useState(false);
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [uploading, setUploading] = useState(false);
 
     const form = useForm({
         defaultValues: {
@@ -43,11 +46,17 @@ export default function RegisterForm() {
         onSubmit: async ({ value }) => {
             const toastId = toast.loading("Creating account...");
             try {
+                let imageUrl = value.image;
+
+                // 🔥 IF FILE SELECTED → upload to ImgBB
+                if (imageFile) {
+                    imageUrl = await uploadToImgBB(imageFile);
+                }
                 const { error } = await authClient.signUp.email({
                     email: value.email,
                     password: value.password,
                     name: value.name,
-                    image: value.image || "https://i.ibb.co/p6pfFmGm/default-avatar.jpg",
+                    image: imageUrl || "https://i.ibb.co/p6pfFmGm/default-avatar.jpg",
                     // @ts-ignore
                     phone: value.phone,
                     role: value.role,
@@ -145,17 +154,52 @@ export default function RegisterForm() {
 
                     <form.Field name="image">
                         {(field) => (
-                            <div className="space-y-2">
-                                <label className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">Profile Image URL</label>
+                            <div>
+                                <label className="text-sm font-semibold">Profile Image</label>
+
                                 <input
-                                    value={field.state.value}
-                                    onBlur={field.handleBlur}
-                                    onChange={(e) => field.handleChange(e.target.value)}
-                                    placeholder="https://example.com/avatar.jpg"
-                                    className="w-full h-11 px-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-transparent text-sm focus:ring-2 focus:ring-zinc-500 outline-none transition-all"
+                                    id="imgbb"
+                                    type="file"
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={async (e) => {
+                                        const file = e.target.files?.[0];
+                                        if (!file) return;
+
+                                        setUploading(true);
+                                        const toastId = toast.loading("Uploading image...");
+
+                                        try {
+                                            const url = await uploadToImgBB(file);
+                                            field.handleChange(url);
+                                            toast.success("Uploaded!", { id: toastId });
+                                        } catch (err) {
+                                            toast.error("Upload failed", { id: toastId });
+                                        } finally {
+                                            setUploading(false);
+                                        }
+                                    }}
                                 />
-                                {field.state.meta.errors.length > 0 && (
-                                    <p className="text-[11px] font-medium text-red-500">{field.state.meta.errors[0]}</p>
+
+                                <label
+                                    htmlFor="imgbb"
+                                    className="w-full h-11 px-4 border rounded-lg flex items-center justify-between cursor-pointer"
+                                >
+                                    <span className="text-sm text-zinc-500">
+                                        {uploading
+                                            ? "Uploading..."
+                                            : field.state.value
+                                                ? "Image uploaded ✓"
+                                                : "Choose image"}
+                                    </span>
+                                    <span className="text-xs text-zinc-400">Browse</span>
+                                </label>
+
+                                {field.state.value && (
+                                    <img
+                                        src={field.state.value}
+                                        className="w-14 h-14 mt-2 rounded-full object-cover"
+                                    />
                                 )}
                             </div>
                         )}
@@ -216,7 +260,7 @@ export default function RegisterForm() {
                             <button
                                 type="submit"
                                 disabled={!canSubmit || isSubmitting}
-                                className="w-full h-12 mt-4 bg-zinc-900 dark:bg-zinc-50 text-zinc-50 dark:text-zinc-900 rounded-xl font-bold text-sm hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center shadow-lg"
+                                className="w-full cursor-pointer h-12 mt-4 bg-zinc-900 dark:bg-zinc-50 text-zinc-50 dark:text-zinc-900 rounded-xl font-bold text-sm hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center shadow-lg"
                             >
                                 {isSubmitting ? "Creating Account..." : "Create Account"}
                             </button>

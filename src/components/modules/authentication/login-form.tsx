@@ -187,7 +187,7 @@ export default function LoginForm() {
                             <button
                                 type="submit"
                                 disabled={!canSubmit || isSubmitting}
-                                className="w-full h-11 bg-zinc-900 dark:bg-zinc-50 text-zinc-50 dark:text-zinc-900 rounded-md font-bold text-sm hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center mt-2"
+                                className="w-full cursor-pointer h-11 bg-zinc-900 dark:bg-zinc-50 text-zinc-50 dark:text-zinc-900 rounded-md font-bold text-sm hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center mt-2"
                             >
                                 {isSubmitting ? (
                                     <span className="flex items-center gap-2">

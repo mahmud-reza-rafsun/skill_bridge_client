@@ -43,7 +43,7 @@ const sidebarConfig = {
       { label: "My Bookings", icon: ClipboardList, href: "/my-bookings" },
       { label: "Availability", icon: TimerReset, href: "/availability" },
       { label: "Students Reviews", icon: Gift, href: "/students-reviews" },
-      { label: "Profile", icon: UserPen, href: "/profile" },
+      { label: "Tutor Profile", icon: UserPen, href: "/profile" },
     ],
   },
   student: {
@@ -51,7 +51,6 @@ const sidebarConfig = {
     items: [
       { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
       { label: "My Bookings", icon: BookOpen, href: "/my-bookings" },
-      { label: "Profile", icon: UserPen, href: "/profile" },
     ],
   },
 };
