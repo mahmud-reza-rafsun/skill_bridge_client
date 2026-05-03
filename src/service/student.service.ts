@@ -73,4 +73,30 @@ export const studentService = {
             return { data: [], error: "Connection Error" };
         }
     },
+    getSuccessStudent: async function (page: number, limit: number) {
+        try {
+            const cookieStore = await cookies();
+
+            const res = await fetch(`${BACKEND_URL}/api/student/success-students?page=${page}&limit=${limit}`, {
+                method: "GET",
+                headers: {
+                    "Cookie": cookieStore.toString(),
+                },
+                cache: "no-store",
+            });
+
+            const result = await res.json();
+            if (!res.ok) {
+                return { data: [], meta: null, error: result.message || "Failed to get success student" };
+            }
+            return {
+                data: result.data || [],
+                meta: result.meta || { totalPage: 1 },
+                error: null
+            };
+        } catch (error) {
+            console.error("Connection Error:", error);
+            return { data: [], meta: null, error: "Connection Error" };
+        }
+    },
 };

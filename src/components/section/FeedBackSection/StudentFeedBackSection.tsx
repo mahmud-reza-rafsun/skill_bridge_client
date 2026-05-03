@@ -119,7 +119,7 @@ function StudentFeedBackSection() {
         <div className="flex flex-col items-center justify-center p-4 min-h-screen font-sans w-full overflow-hidden bg-background text-foreground transition-colors duration-500">
 
             <div className="text-center mb-10 max-w-2xl px-4">
-                <h2 className="text-4xl md:text-5xl font-bold mb-4">Student <span className="text-orange-500">Success Network</span></h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">Student <span className="text-orange-500">Success Network</span></h2>
                 <p className="text-base md:text-lg text-muted-foreground">
                     Real-time feedback drives our shared success.
                 </p>

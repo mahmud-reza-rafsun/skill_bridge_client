@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiPlus, FiMinus } from 'react-icons/fi';
+import { FiPlus } from 'react-icons/fi';
 
 const faqs = [
     {
@@ -29,65 +29,70 @@ const faqs = [
 function FaqSection() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-    const toggleFAQ = (index: number) => {
-        setActiveIndex(activeIndex === index ? null : index);
-    };
-
     return (
-        <section className="py-32 bg-background text-foreground transition-colors duration-500">
-            <div className="container mx-auto px-6 max-w-4xl">
-
+        <section className="py-24 bg-background">
+            <div className="container mx-auto px-4 max-w-3xl">
+                {/* Header Part */}
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4">Common <span className="text-orange-500">Questions</span></h2>
-                    <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-                        Everything you need to know about our learning platform and the enrollment process.
-                    </p>
+                    <motion.h2
+                        initial={{ opacity: 0, y: -10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4"
+                    >
+                        Common <span className="text-orange-500">Questions</span>
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-muted-foreground text-base md:text-lg"
+                    >
+                        Everything you need to know about our platform and process.
+                    </motion.p>
                 </div>
 
-                <div className="grid gap-5">
+                {/* FAQ List */}
+                <div className="space-y-4">
                     {faqs.map((faq, index) => {
                         const isOpen = activeIndex === index;
                         return (
                             <motion.div
                                 key={index}
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 10 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                className={`group rounded-2xl transition-all duration-300 border-2
-                                    ${isOpen
-                                        ? 'bg-card border-orange-500 shadow-[0_20px_40px_-15px_rgba(249,115,22,0.15)]'
-                                        : 'bg-card/50 border-border hover:border-orange-500/30'
+                                transition={{ delay: index * 0.05 }}
+                                className={`overflow-hidden rounded-2xl border transition-all duration-300 ${isOpen
+                                    ? 'bg-card border-orange-500/50 shadow-lg shadow-orange-500/5'
+                                    : 'bg-card/40 border-border hover:border-orange-500/30'
                                     }`}
                             >
                                 <button
-                                    onClick={() => toggleFAQ(index)}
-                                    className="w-full flex items-center justify-between p-6 md:p-8 text-left focus:outline-none"
+                                    onClick={() => setActiveIndex(isOpen ? null : index)}
+                                    className="w-full flex items-center justify-between p-5 md:p-6 text-left"
                                 >
-                                    <span className={`text-lg md:text-xl font-bold pr-8 transition-colors duration-300
-                                        ${isOpen ? 'text-orange-600 dark:text-orange-500' : 'text-foreground/90'}`}>
+                                    <span className={`text-base md:text-lg font-semibold transition-colors duration-300 ${isOpen ? 'text-orange-500' : 'text-foreground/80'
+                                        }`}>
                                         {faq.question}
                                     </span>
-                                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300
-                                        ${isOpen
-                                            ? 'bg-orange-500 text-white rotate-0'
-                                            : 'bg-orange-100 dark:bg-slate-800 text-orange-600 rotate-90'}`}>
-                                        {isOpen ? <FiMinus size={20} /> : <FiPlus size={20} />}
+                                    <div className={`ml-4 flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-45 text-orange-500' : 'text-muted-foreground'}`}>
+                                        <FiPlus size={22} />
                                     </div>
                                 </button>
 
-                                <AnimatePresence initial={false}>
+                                <AnimatePresence>
                                     {isOpen && (
                                         <motion.div
                                             initial={{ height: 0, opacity: 0 }}
                                             animate={{ height: 'auto', opacity: 1 }}
                                             exit={{ height: 0, opacity: 0 }}
-                                            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                                            transition={{ duration: 0.3, ease: "easeInOut" }}
                                         >
-                                            <div className="px-6 pb-8 md:px-8 md:pb-10">
-                                                <div className="h-px w-full bg-border/60 mb-6" />
-                                                <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-                                                    {faq.answer}
-                                                </p>
+                                            <div className="px-5 pb-6 md:px-6 md:pb-8">
+                                                <div className="pt-4 border-t border-border/50">
+                                                    <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+                                                        {faq.answer}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </motion.div>
                                     )}

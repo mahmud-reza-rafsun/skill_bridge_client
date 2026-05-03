@@ -33,8 +33,10 @@ export const Navbar = ({
   menu = [
     { title: "Home", url: "/" },
     { title: "Tutors", url: "/tutors" },
-    { title: "Profile", url: "/my-profile" },
     { title: "Dashboard", url: "/dashboard" },
+    { title: "Success Student", url: "/student" },
+    { title: "Profile", url: "/my-profile" },
+    { title: "About", url: "/about" },
   ],
   auth = {
     login: { title: "Login", url: "/login" },

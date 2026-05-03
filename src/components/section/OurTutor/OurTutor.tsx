@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Briefcase, ChevronLeft, ChevronRight, NotebookTabs } from "lucide-react";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton"; // আপনার প্রজেক্টের পাথ অনুযায়ী ইম্পোর্ট
+import { Skeleton } from "@/components/ui/skeleton";
 
 // --- Types ---
 interface Tutor {
@@ -141,7 +141,7 @@ export default function OutTutor() {
     return (
         <section className="flex flex-col items-center py-32 relative min-h-[700px] bg-background overflow-hidden">
             <div className="text-center mb-16 px-4">
-                <h2 className="text-4xl md:text-5xl font-bold mb-4">Our <span className="text-orange-500">Mentors</span></h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">Our <span className="text-orange-500">Mentors</span></h2>
                 <p className="text-muted-foreground text-base max-w-lg mx-auto">
                     Learn from industry experts and take your career to the next level with personalized guidance.
                 </p>

@@ -41,7 +41,7 @@ export const HeroSection = () => {
                     {/* Actions - Matching Navbar Style */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Button asChild size="lg" className="h-10 px-4 rounded-full text-sm font-bold bg-orange-500 text-white hover:bg-orange-600 shadow-lg shadow-orange-500/20 border-none transition-all hover:scale-105 active:scale-95 group">
-                            <Link href="/register" className="flex items-center gap-2">
+                            <Link href="/tutors" className="flex items-center gap-2">
                                 Start Learning
                                 <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
                             </Link>

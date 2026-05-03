@@ -87,7 +87,7 @@ export default function Courses() {
         <section className="w-full flex flex-col items-center justify-center py-20 overflow-hidden">
             {/* 1. Heading Section */}
             <div className="text-center mb-12 px-4">
-                <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
                     We <span className="text-orange-500">Offer</span>
                 </h2>
                 <p className="text-muted-foreground max-w-xl mx-auto text-sm md:text-base">
