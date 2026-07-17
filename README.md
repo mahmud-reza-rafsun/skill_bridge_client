@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Skill Bridge
+
+Skill Bridge is a full-stack tutor discovery and booking platform built with Next.js. Students can find tutors, book sessions, and pay securely, while tutors manage their availability and earnings — all through role-based dashboards for Students, Tutors, and Admins.
+
+## Features
+
+- 🔍 **Tutor Discovery** — Search and filter tutors by subject, availability, rating, and price
+- 📅 **Booking System** — Real-time session scheduling and booking management
+- 💳 **Payments** — Secure checkout powered by Stripe
+- 🔐 **Role-Based Access Control (RBAC)** — Separate, permission-scoped experiences for Students, Tutors, and Admins
+- 🎓 **Student Dashboard** — View bookings, upcoming sessions, payment history, and favorite tutors
+- 👨‍🏫 **Tutor Dashboard** — Manage availability, view bookings, track earnings, and update profile
+- 🛠️ **Admin Dashboard** — Manage users, monitor bookings, oversee payments, and platform analytics
+- 📱 **Responsive UI** — Fully responsive design built with Tailwind CSS
+
+## Tech Stack
+
+**Frontend**
+- Next.js
+- TypeScript
+- Tailwind CSS
+
+**Backend**
+- Node.js / Express.js (or Next.js API routes)
+- PostgreSQL
+- Prisma ORM
+
+**Authentication**
+- JWT / NextAuth.js
+
+**Payments**
+- Stripe
+
+## User Roles
+
+| Role    | Access |
+|---------|--------|
+| Student | Search tutors, book sessions, make payments, view booking history |
+| Tutor   | Manage availability, accept/reject bookings, view earnings |
+| Admin   | Manage all users, monitor platform activity, handle disputes/refunds |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js (v18+)
+- Bun (or npm/yarn)
+- PostgreSQL database
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repository
+git clone https://github.com/your-username/skill-bridge.git
+cd skill-bridge
+
+# Install dependencies
+bun install
+
+# Set up environment variables
+cp .env.example .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env` file in the root directory and add the following:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/skillbridge"
+NEXTAUTH_SECRET="your-nextauth-secret"
+NEXTAUTH_URL="http://localhost:3000"
+STRIPE_SECRET_KEY="your-stripe-secret-key"
+STRIPE_PUBLISHABLE_KEY="your-stripe-publishable-key"
+STRIPE_WEBHOOK_SECRET="your-stripe-webhook-secret"
+JWT_SECRET="your-jwt-secret"
+```
 
-## Learn More
+### Database Setup
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Run Prisma migrations
+bunx prisma migrate dev
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Generate Prisma client
+bunx prisma generate
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# (Optional) Seed the database
+bunx prisma db seed
+```
 
-## Deploy on Vercel
+### Run the Development Server
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+bun run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Project Structure
+
+```
+skill-bridge/
+├── src/
+│   ├── app/
+│   │   ├── (auth)/            # Login, register pages
+│   │   ├── (dashboard)/
+│   │   │   ├── student/       # Student dashboard
+│   │   │   ├── tutor/         # Tutor dashboard
+│   │   │   └── admin/         # Admin dashboard
+│   │   ├── api/                # API routes
+│   │   └── layout.tsx
+│   ├── components/             # Reusable UI components
+│   ├── lib/                    # Utilities, Prisma client, auth config
+│   ├── middleware.ts           # Role-based route protection
+│   └── styles/
+├── prisma/
+│   ├── schema.prisma
+│   └── seed.ts
+├── public/
+├── .env.example
+└── README.md
+```
+
+## Roadmap
+
+- [ ] Real-time chat between students and tutors
+- [ ] Video call integration for sessions
+- [ ] Review and rating system
+- [ ] bKash / Nagad payment integration
+- [ ] Email/SMS notifications
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome. Feel free to check the [issues page](https://github.com/your-username/skill-bridge/issues).
+
+## License
+
+This project is licensed under the MIT License.
+
+## Author
+
+**Mahmud Reza Rafsun**
+Full-Stack Developer
